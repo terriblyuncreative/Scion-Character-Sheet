@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+
+	<title>
+Character Display
+	</title>
+<!--	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="../images/favicon.ico" type="image/x-icon">-->
+
+	<!-- Bootstrap -->
+	<link href="http://www.terriblyuncreative.com/scion/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://www.terriblyuncreative.com/scion/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="http://css-spinners.com/css/spinners.css" type="text/css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<script>
+    var campaignTitle = "Sample Characters";
+  </script>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<!--	<script type="text/javascript" src="http://www.terriblyuncreative.com/scion/js/allscripts.js"></script>-->
+
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+
+	<script type="text/javascript" src="array-scripts.js"></script>
+	<script type="text/javascript" src="character-scripts.js"></script>
+	<script type="text/javascript" src="character-write-scripts.js"></script>
+
+	<style>
+		.updateHeaders {
+			background-color: #C9C9C9;
+			padding-left: 20px;
+		}
+		.updateHeaders a, .updateHeaders a.hover, .updateHeaders a.visited, .updateHeaders a.focus {
+			text-decoration: none;
+		}
+		.fatebondList li{
+			list-style-type: none;
+		}
+		.relicList li{
+			/*list-style-type: none;*/
+		}
+		.disabledRelic {
+			color: #7D7D7D;
+			text-decoration: line-through;
+		}
+		.test {
+			color: #B8B8B8;
+		}
+		#resultsArea {
+			color: #FF0000;
+		}
+		.displayNone {
+			display: none !important;
+		}
+		.displayNow {
+			display: block !important;
+		}
+	</style>
+</head>
+<body onload="onLoadFunctions()">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://www.terriblyuncreative.com/scion/js/bootstrap.min.js"></script>
+
+<div class="container"><!--CONTAINER-->
+
+<div id="statusChecks"></div>
+
+<h1><script>document.write(characterName);</script></h1>
+
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+	<li><a href="#dieroller" data-toggle="tab">Die Roller</a></li>
+	<li id="presetrollerTab" class="active"><a href="#presetroller" data-toggle="tab">Rolls</a></li>
+	<li><a href="#basetraits" data-toggle="tab">Base Traits</a></li>
+	<li><a href="#relics" data-toggle="tab">Relics</a></li>
+	<li><a href="#fatebonds" data-toggle="tab">Fatebonds</a></li>
+	<li><a href="#tempmodifiers" data-toggle="tab">Temporary</a></li>
+	<li id="powersTab"><a href="#powers" data-toggle="tab">Powers</a></li>
+	<li><a href="#update" data-toggle="tab">Update</a></li>
+</ul>
+
+<!--TAB CONTENT-->
+<div id="my-tab-content" class="tab-content">
+
+	<!--DIE ROLLER-->
+<div class="tab-pane" id="dieroller">
+	<input id="diceGeneric" size="4" type="number" placeholder = "">
+	<label>DICE</label>
+	<br>
+	<input id="autoGeneric" size="4" type="number" placeholder = "">
+	<label>AUTO-SUCCESSES</label>
+	<br>
+	<button onclick="rollGeneric()" id="rollButtonGeneric">ROLL</button>
+	<button onclick="rollAgainGeneric()" id="rollAgainButtonGeneric">ROLL AGAIN</button>
+	<h3>RESULTS</h3>
+	<div id="resultsAreaGeneric"></div>
+</div>
+<!--//DIE ROLLER-->
+
+
+
+
+
+<!--PRESET ROLLS-->
+<div class="tab-pane active" id="presetroller">
+	<h3>Open Rolls</h3>
+	<select id="rollerAttributeEntry">
+	  <option value="ChooseOne">No Attribute</option>
+		<option value="strength">Strength</option>
+		<option value="dexterity">Dexterity</option>
+		<option value="stamina">Stamina</option>
+		<option value="charisma">Charisma</option>
+		<option value="manipulation">Manipulation</option>
+		<option value="appearance">Appearance</option>
+		<option value="perception">Perception</option>
+		<option value="intelligence">Intelligence</option>
+		<option value="wits">Wits</option>
+	</select>
+	<br>
+	<select id="rollerSkillEntry">
+	  <option value="ChooseOne">No Skill</option>
+		<option value="academics">Academics</option>
+		<option value="animalken">Animal Ken</option>
+		<option value="art">Art</option>
+		<option value="athletics">Athletics</option>
+		<option value="awareness">Awareness</option>
+		<option value="brawl">Brawl</option>
+		<option value="command">Command</option>
+		<option value="control">Control</option>
+		<option value="craft">Craft</option>
+		<option value="empathy">Empathy</option>
+		<option value="fortitude">Fortitude</option>
+		<option value="integrity">Integrity</option>
+		<option value="investigation">Investigation</option>
+		<option value="larceny">Larceny</option>
+		<option value="marksmanship">Marksmanship</option>
+		<option value="medicine">Medicine</option>
+		<option value="melee">Melee</option>
+		<option value="occult">Occult</option>
+		<option value="politics">Politics</option>
+		<option value="presence">Presence</option>
+		<option value="science">Science</option>
+		<option value="stealth">Stealth</option>
+		<option value="survival">Survival</option>
+		<option value="thrown">Thrown</option>
+	</select>
+	<br>
+	<select id="rollerVirtueEntry">
+	  <option value="ChooseOne">No Virtue</option>
+		<option value="conviction">Conviction</option>
+		<option value="courage">Courage</option>
+		<option value="duty">Duty</option>
+		<option value="endurance">Endurance</option>
+		<option value="expression">Expression</option>
+		<option value="harmony">Harmony</option>
+		<option value="intellect">Intellect</option>
+		<option value="loyalty">Loyalty</option>
+		<option value="order">Order</option>
+		<option value="piety">Piety</option>
+		<option value="valor">Valor</option>
+		<option value="ambition">Ambition</option>
+		<option value="anarchy">Anarchy</option>
+		<option value="apathy">Apathy</option>
+		<option value="cowardice">Cowardice</option>
+		<option value="destruction">Destruction</option>
+		<option value="discord">Discord</option>
+		<option value="heresy">Heresy</option>
+		<option value="ignorance">Ignorance</option>
+		<option value="malice">Malice</option>
+		<option value="rapacity">Rapacity</option>
+		<option value="treachery">Treachery</option>
+		<option value="tyranny">Tyranny</option>
+	</select>
+	<br>
+	<select id="rollerOtherEntry">
+	  <option value="ChooseOne">No Trait</option>
+		<option value="legend">Legend</option>
+		<option value="willpower">Willpower</option>
+	</select>
+	<br>
+	<br>
+	<select id="rollerBoonEntry">
+		<option value="ChooseOne">Not a Boon Activation</option>
+		<option value="animal">Animal</option>
+		<option value="chaos">Chaos</option>
+		<option value="creation">Creation</option>
+		<option value="darkness">Darkness</option>
+		<option value="death">Death</option>
+		<option value="earth">Earth</option>
+		<option value="fertility">Fertility</option>
+		<option value="fire">Fire</option>
+		<option value="frost">Frost</option>
+		<option value="guardian">Guardian</option>
+		<option value="health">Health</option>
+		<option value="illusion">Illusion</option>
+		<option value="justice">Justice</option>
+		<option value="magic">Magic</option>
+		<option value="moon">Moon</option>
+		<option value="mystery">Mystery</option>
+		<option value="prophecy">Prophecy</option>
+		<option value="psychopomp">Psychopomp</option>
+		<option value="sky">Sky</option>
+		<option value="star">Star</option>
+		<option value="sun">Sun</option>
+		<option value="thunder">Thunder</option>
+		<option value="war">War</option>
+		<option value="water">Water</option>
+	</select>
+	<br>
+	<select id="rollerPurviewEntry">
+		<option value="ChooseOne">No #Boons</option>
+		<option value="numberAnimal">#Animal</option>
+		<option value="numberChaos">#Chaos</option>
+		<option value="numberCreation">#Creation</option>
+		<option value="numberDarkness">#Darkness</option>
+		<option value="numberDeath">#Death</option>
+		<option value="numberEarth">#Earth</option>
+		<option value="numberFertility">#Fertility</option>
+		<option value="numberFire">#Fire</option>
+		<option value="numberFrost">#Frost</option>
+		<option value="numberGuardian">#Guardian</option>
+		<option value="numberHealth">#Health</option>
+		<option value="numberIllusion">#Illusion</option>
+		<option value="numberJustice">#Justice</option>
+		<option value="numberMagic">#Magic</option>
+		<option value="numberMoon">#Moon</option>
+		<option value="numberMystery">#Mystery</option>
+		<option value="numberProphecy">#Prophecy</option>
+		<option value="numberPsychopomp">#Psychopomp</option>
+		<option value="numberSky">#Sky</option>
+		<option value="numberStar">#Star</option>
+		<option value="numberSun">#Sun</option>
+		<option value="numberThunder">#Thunder</option>
+		<option value="numberWar">#War</option>
+		<option value="numberWater">#Water</option>
+	</select>
+	<br>
+
+	<br>
+	<label>Preset Rolls</label>
+	<select id="rollerPresetEntry">
+	</select>
+
+	<br>
+	<label>Attack Roll</label>
+	<select id="attackRollEntry">
+	</select>
+	<br>
+	<label>Damage Roll</label>
+	<select id="damageRollEntry">
+	</select>
+	<br>
+
+	<br>
+
+	<br>
+
+	<button onclick="rollCatcher(0, document.getElementById('rollerAttributeEntry').value, document.getElementById('rollerSkillEntry').value, document.getElementById('rollerBoonEntry').value, document.getElementById('rollerPurviewEntry').value, document.getElementById('rollerVirtueEntry').value, document.getElementById('rollerOtherEntry').value, document.getElementById('rollerPresetEntry').value, document.getElementById('attackRollEntry').value, document.getElementById('damageRollEntry').value)" id="rollButton">ROLL</button>
+	<button type="button" data-toggle="modal" data-target="#rollExtraModal" id="rollExtraButton">ROLL++</button>
+	<!-- <button type="button" data-toggle="modal" data-target="#rollExtraModal" id="rollExtraButton" onclick="rollCatcher(0, document.getElementById('rollerAttributeEntry').value, document.getElementById('rollerSkillEntry').value, document.getElementById('rollerBoonEntry').value, document.getElementById('rollerPurviewEntry').value, document.getElementById('rollerVirtueEntry').value, document.getElementById('rollerOtherEntry').value, document.getElementById('rollerPresetEntry').value, document.getElementById('combatRollEntry').value, document.getElementById('combatTypeEntry').value)">ROLL++</button> -->
+	<button onclick="rollAgain()" id="rollAgainButton">REROLL</button>
+
+
+	<h3>RESULTS</h3>
+	<div id="resultsArea"></div>
+	<hr>
+
+	<div id="defensesArea"></div>
+	<hr>
+
+	<div id="otherDerivedTraitsArea"></div>
+	<hr>
+
+	<br>
+	<span id="displayMyCharacterValuesHere" style="color: #808080"></span>
+
+</div>
+<!--//PRESET ROLLS-->
+
+
+
+
+
+<!--BASE TRAITS-->
+<div class="tab-pane" id="basetraits">
+	<br>
+	<span>Pantheon: </span><strong><span id="pantheonBase"></span></strong><br>
+	<br>
+	<span>Legend: </span><strong><span id="legendBase"></span></strong><br>
+	<span>Willpower: </span><strong><span id="willpowerBase"></span></strong><br>
+	<br>
+	<span>Strength: </span><strong><span id="strengthBase"></span></strong><br>
+	<span>Dexterity: </span><strong><span id="dexterityBase"></span></strong><br>
+	<span>Stamina: </span><strong><span id="staminaBase"></span></strong><br>
+	<span>Charisma: </span><strong><span id="charismaBase"></span></strong><br>
+	<span>Manipulation: </span><strong><span id="manipulationBase"></span></strong><br>
+	<span>Appearance: </span><strong><span id="appearanceBase"></span></strong><br>
+	<span>Perception: </span><strong><span id="perceptionBase"></span></strong><br>
+	<span>Intelligence: </span><strong><span id="intelligenceBase"></span></strong><br>
+	<span>Wits: </span><strong><span id="witsBase"></span></strong><br>
+	<br>
+	<span>Academics: </span><strong><span id="academicsBase"></span></strong><br>
+	<span>Animal Ken: </span><strong><span id="animalkenBase"></span></strong><br>
+	<span>Art: </span><strong><span id="artBase"></span></strong><br>
+	<span>Athletics: </span><strong><span id="athleticsBase"></span></strong><br>
+	<span>Awareness: </span><strong><span id="awarenessBase"></span></strong><br>
+	<span>Brawl: </span><strong><span id="brawlBase"></span></strong><br>
+	<span>Command: </span><strong><span id="commandBase"></span></strong><br>
+	<span>Control: </span><strong><span id="controlBase"></span></strong><br>
+	<span>Craft: </span><strong><span id="craftBase"></span></strong><br>
+	<span>Empathy: </span><strong><span id="empathyBase"></span></strong><br>
+	<span>Fortitude: </span><strong><span id="fortitudeBase"></span></strong><br>
+	<span>Integrity: </span><strong><span id="integrityBase"></span></strong><br>
+	<span>Investigation: </span><strong><span id="investigationBase"></span></strong><br>
+	<span>Larceny: </span><strong><span id="larcenyBase"></span></strong><br>
+	<span>Marksmanship: </span><strong><span id="marksmanshipBase"></span></strong><br>
+	<span>Medicine: </span><strong><span id="medicineBase"></span></strong><br>
+	<span>Melee: </span><strong><span id="meleeBase"></span></strong><br>
+	<span>Occult: </span><strong><span id="occultBase"></span></strong><br>
+	<span>Politics: </span><strong><span id="politicsBase"></span></strong><br>
+	<span>Presence: </span><strong><span id="presenceBase"></span></strong><br>
+	<span>Science: </span><strong><span id="scienceBase"></span></strong><br>
+	<span>Stealth: </span><strong><span id="stealthBase"></span></strong><br>
+	<span>Survival: </span><strong><span id="survivalBase"></span></strong><br>
+	<span>Thrown: </span><strong><span id="thrownBase"></span></strong><br>
+	<br>
+	<span>Conviction: </span><strong><span id="convictionBase"></span></strong><br>
+	<span>Courage: </span><strong><span id="courageBase"></span></strong><br>
+	<span>Duty: </span><strong><span id="dutyBase"></span></strong><br>
+	<span>Endurance: </span><strong><span id="enduranceBase"></span></strong><br>
+	<span>Expression: </span><strong><span id="expressionBase"></span></strong><br>
+	<span>Harmony: </span><strong><span id="harmonyBase"></span></strong><br>
+	<span>Intellect: </span><strong><span id="intellectBase"></span></strong><br>
+	<span>Loyalty: </span><strong><span id="loyaltyBase"></span></strong><br>
+	<span>Order: </span><strong><span id="orderBase"></span></strong><br>
+	<span>Piety: </span><strong><span id="pietyBase"></span></strong><br>
+	<span>Valor: </span><strong><span id="valorBase"></span></strong><br>
+	<span>Vengeance: </span><strong><span id="vengeanceBase"></span></strong><br>
+	<span>Ambition: </span><strong><span id="ambitionBase"></span></strong><br>
+	<span>Anarchy: </span><strong><span id="anarchyBase"></span></strong><br>
+	<span>Apathy: </span><strong><span id="apathyBase"></span></strong><br>
+	<span>Cowardice: </span><strong><span id="cowardiceBase"></span></strong><br>
+	<span>Destruction: </span><strong><span id="destructionBase"></span></strong><br>
+	<span>Discord: </span><strong><span id="discordBase"></span></strong><br>
+	<span>Heresy: </span><strong><span id="heresyBase"></span></strong><br>
+	<span>Ignorance: </span><strong><span id="ignoranceBase"></span></strong><br>
+	<span>Malice: </span><strong><span id="maliceBase"></span></strong><br>
+	<span>Rapacity: </span><strong><span id="rapacityBase"></span></strong><br>
+	<span>Treachery: </span><strong><span id="treacheryBase"></span></strong><br>
+	<span>Tyranny: </span><strong><span id="tyrannyBase"></span></strong><br>
+	<br>
+	<span>Epic Strength: </span><strong><span id="epicStrengthBase"></span></strong><br>
+	<span>Epic Dexterity: </span><strong><span id="epicDexterityBase"></span></strong><br>
+	<span>Epic Stamina: </span><strong><span id="epicStaminaBase"></span></strong><br>
+	<span>Epic Charisma: </span><strong><span id="epicCharismaBase"></span></strong><br>
+	<span>Epic Manipulation: </span><strong><span id="epicManipulationBase"></span></strong><br>
+	<span>Epic Appearance: </span><strong><span id="epicAppearanceBase"></span></strong><br>
+	<span>Epic Perception: </span><strong><span id="epicPerceptionBase"></span></strong><br>
+	<span>Epic Intelligence: </span><strong><span id="epicIntelligenceBase"></span></strong><br>
+	<span>Epic Wits: </span><strong><span id="epicWitsBase"></span></strong><br>
+	<br>
+	<span><strong>Epic Strength Knacks: </strong></span><span id="epicStrengthKnacksBase"></span><br>
+	<span><strong>Epic Dexterity Knacks: </strong></span><span id="epicDexterityKnacksBase"></span><br>
+	<span><strong>Epic Stamina Knacks: </strong></span><span id="epicStaminaKnacksBase"></span><br>
+	<span><strong>Epic Charisma Knacks: </strong></span><span id="epicCharismaKnacksBase"></span><br>
+	<span><strong>Epic Manipulation Knacks: </strong></span><span id="epicManipulationKnacksBase"></span><br>
+	<span><strong>Epic Appearance Knacks: </strong></span><span id="epicAppearanceKnacksBase"></span><br>
+	<span><strong>Epic Perception Knacks: </strong></span><span id="epicPerceptionKnacksBase"></span><br>
+	<span><strong>Epic Intelligence Knacks: </strong></span><span id="epicIntelligenceKnacksBase"></span><br>
+	<span><strong>Epic Wits Knacks: </strong></span><span id="epicWitsKnacksBase"></span><br>
+	<br>
+	<strong><span id="pspBoonsTitle"></span><span> Boons: </span></strong><span id="pspBoonsBase"></span><br>
+	<span><strong>Animal Boons: </strong></span><span id="animalBoonsBase"></span><br>
+	<span><strong>Chaos Boons: </strong></span><span id="chaosBoonsBase"></span><br>
+	<span><strong>Creation Boons: </strong></span><span id="creationBoonsBase"></span><br>
+	<span><strong>Darkness Boons: </strong></span><span id="darknessBoonsBase"></span><br>
+	<span><strong>Death Boons: </strong></span><span id="deathBoonsBase"></span><br>
+	<span><strong>Earth Boons: </strong></span><span id="earthBoonsBase"></span><br>
+	<span><strong>Fertility Boons: </strong></span><span id="fertilityBoonsBase"></span><br>
+	<span><strong>Fire Boons: </strong></span><span id="fireBoonsBase"></span><br>
+	<span><strong>Frost Boons: </strong></span><span id="frostBoonsBase"></span><br>
+	<span><strong>Guardian Boons: </strong></span><span id="guardianBoonsBase"></span><br>
+	<span><strong>Health Boons: </strong></span><span id="healthBoonsBase"></span><br>
+	<span><strong>Illusion Boons: </strong></span><span id="illusionBoonsBase"></span><br>
+	<span><strong>Justice Boons: </strong></span><span id="justiceBoonsBase"></span><br>
+	<span><strong>Magic Boons: </strong></span><span id="magicBoonsBase"></span><br>
+	<span><strong>Moon Boons: </strong></span><span id="moonBoonsBase"></span><br>
+	<span><strong>Mystery Boons: </strong></span><span id="mysteryBoonsBase"></span><br>
+	<span><strong>Prophecy Boons: </strong></span><span id="prophecyBoonsBase"></span><br>
+	<span><strong>Psychopomp Boons: </strong></span><span id="psychopompBoonsBase"></span><br>
+	<span><strong>Sky Boons: </strong></span><span id="skyBoonsBase"></span><br>
+	<span><strong>Star Boons: </strong></span><span id="starBoonsBase"></span><br>
+	<span><strong>Sun Boons: </strong></span><span id="sunBoonsBase"></span><br>
+	<span><strong>Thunder Boons: </strong></span><span id="thunderBoonsBase"></span><br>
+	<span><strong>War Boons: </strong></span><span id="warBoonsBase"></span><br>
+	<span><strong>Water Boons: </strong></span><span id="waterBoonsBase"></span><br>
+
+	<span>Powers with Exceptions: </span><span id="exceptionRequiredList"></span>
+	<br><br>
+	<span>Powers that Modify the Sheet: </span><span id="modifiesSheetList"></span>
+</div>
+<!--//BASE TRAITS-->
+
+
+
+
+
+
+<!--RELICS-->
+<div class="tab-pane" id="relics">
+
+	<span id="currentRelicsDisplay"></span>
+	<h2>Armor: </h2>
+	<span id="currentArmorDisplay"></span>
+
+</div>
+<!--//RELICS-->
+
+
+
+
+
+
+<!--FATEBONDS-->
+<div class="tab-pane" id="fatebonds">
+
+	<span id="currentFatebondsDisplay"></span>
+
+	<input id="fatebondLevelEntry" type="number"><label>Fatebond Level</label><br>
+	<input id="fatebondSourceEntry" type="text"><label>Fatebond Source</label><br>
+	<select id="fatebondBonusEntry">
+	  <option value="ChooseOne">Choose One</option>
+		<option value="Strength">Strength</option>
+		<option value="Dexterity">Dexterity</option>
+		<option value="Stamina">Stamina</option>
+		<option value="Charisma">Charisma</option>
+		<option value="Manipulation">Manipulation</option>
+		<option value="Appearance">Appearance</option>
+		<option value="Perception">Perception</option>
+		<option value="Intelligence">Intelligence</option>
+		<option value="Wits">Wits</option>
+		<option value="Academics">Academics</option>
+		<option value="Animal Ken">Animal Ken</option>
+		<option value="Art">Art</option>
+		<option value="Athletics">Athletics</option>
+		<option value="Awareness">Awareness</option>
+		<option value="Brawl">Brawl</option>
+		<option value="Command">Command</option>
+		<option value="Control">Control</option>
+		<option value="Craft">Craft</option>
+		<option value="Empathy">Empathy</option>
+		<option value="Fortitude">Fortitude</option>
+		<option value="Integrity">Integrity</option>
+		<option value="Investigation">Investigation</option>
+		<option value="Larceny">Larceny</option>
+		<option value="Marksmanship">Marksmanship</option>
+		<option value="Medicine">Medicine</option>
+		<option value="Melee">Melee</option>
+		<option value="Occult">Occult</option>
+		<option value="Politics">Politics</option>
+		<option value="Presence">Presence</option>
+		<option value="Science">Science</option>
+		<option value="Stealth">Stealth</option>
+		<option value="Survival">Survival</option>
+		<option value="Thrown">Thrown</option>
+		<option value="Animal">Animal</option>
+		<option value="Chaos">Chaos</option>
+		<option value="Creation">Creation</option>
+		<option value="Darkness">Darkness</option>
+		<option value="Death">Death</option>
+		<option value="Earth">Earth</option>
+		<option value="Fertility">Fertility</option>
+		<option value="Fire">Fire</option>
+		<option value="Frost">Frost</option>
+		<option value="Guardian">Guardian</option>
+		<option value="Health">Health</option>
+		<option value="Illusion">Illusion</option>
+		<option value="Justice">Justice</option>
+		<option value="Magic">Magic</option>
+		<option value="Moon">Moon</option>
+		<option value="Mystery">Mystery</option>
+		<option value="Prophecy">Prophecy</option>
+		<option value="Psychopomp">Psychopomp</option>
+		<option value="Sky">Sky</option>
+		<option value="Star">Star</option>
+		<option value="Sun">Sun</option>
+		<option value="Thunder">Thunder</option>
+		<option value="War">War</option>
+		<option value="Water">Water</option>
+	</select><label>Fatebond Bonus</label><br>
+	<select id="fatebondPenaltyEntry">
+		<option value="ChooseOne">Choose One</option>
+		<option value="Strength">Strength</option>
+		<option value="Dexterity">Dexterity</option>
+		<option value="Stamina">Stamina</option>
+		<option value="Charisma">Charisma</option>
+		<option value="Manipulation">Manipulation</option>
+		<option value="Appearance">Appearance</option>
+		<option value="Perception">Perception</option>
+		<option value="Intelligence">Intelligence</option>
+		<option value="Wits">Wits</option>
+		<option value="Academics">Academics</option>
+		<option value="Animal Ken">Animal Ken</option>
+		<option value="Art">Art</option>
+		<option value="Athletics">Athletics</option>
+		<option value="Awareness">Awareness</option>
+		<option value="Brawl">Brawl</option>
+		<option value="Command">Command</option>
+		<option value="Control">Control</option>
+		<option value="Craft">Craft</option>
+		<option value="Empathy">Empathy</option>
+		<option value="Fortitude">Fortitude</option>
+		<option value="Integrity">Integrity</option>
+		<option value="Investigation">Investigation</option>
+		<option value="Larceny">Larceny</option>
+		<option value="Marksmanship">Marksmanship</option>
+		<option value="Medicine">Medicine</option>
+		<option value="Melee">Melee</option>
+		<option value="Occult">Occult</option>
+		<option value="Politics">Politics</option>
+		<option value="Presence">Presence</option>
+		<option value="Science">Science</option>
+		<option value="Stealth">Stealth</option>
+		<option value="Survival">Survival</option>
+		<option value="Thrown">Thrown</option>
+		<option value="Animal">Animal</option>
+		<option value="Chaos">Chaos</option>
+		<option value="Creation">Creation</option>
+		<option value="Darkness">Darkness</option>
+		<option value="Death">Death</option>
+		<option value="Earth">Earth</option>
+		<option value="Fertility">Fertility</option>
+		<option value="Fire">Fire</option>
+		<option value="Frost">Frost</option>
+		<option value="Guardian">Guardian</option>
+		<option value="Health">Health</option>
+		<option value="Illusion">Illusion</option>
+		<option value="Justice">Justice</option>
+		<option value="Magic">Magic</option>
+		<option value="Moon">Moon</option>
+		<option value="Mystery">Mystery</option>
+		<option value="Prophecy">Prophecy</option>
+		<option value="Psychopomp">Psychopomp</option>
+		<option value="Sky">Sky</option>
+		<option value="Star">Star</option>
+		<option value="Sun">Sun</option>
+		<option value="Thunder">Thunder</option>
+		<option value="War">War</option>
+		<option value="Water">Water</option>
+	</select><label>Fatebond Penalty</label><br>
+	<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="addNewFatebond()">Add Fatebond</button>
+
+</div>
+<!--//FATEBONDS-->
+
+
+
+
+
+
+
+<!--TEMP MODIFIERS-->
+ <div class="tab-pane" id="tempmodifiers">
+
+	<span id="currentTempModifierDisplay"></span>
+
+	<br>
+	<input id="tempModifierSourceEntry" type="text"><label>Modifier Name/Source</label><br>
+	<br>
+	<input id="tempModifierLevelEntry" type="number"><label>Bonus/Penalty Amount</label><br>
+	<select id="tempModifierSelector2">
+		<option value="bonusDice">Dice</option>
+		<option value="bonusSuccesses">Successes</option>
+		<option value="bonusBoons">#Boons</option>
+	</select>
+	<label>To: </label><br>
+	<select id="tempModifierEntry">
+	  <option value="ChooseOne">Choose One</option>
+		<option value="global">Everything</option>
+		<option value="mentalResist">Mental Resist</option>
+		<option value="socialResist">Social Resist</option>
+		<option value="physicalResist">Physical Resist</option>
+		<option value="joinBattle">Join Battle</option>
+		<option value="featOfStrength">Feat of Strength</option>
+		<option value="Strength">Strength</option>
+		<option value="Dexterity">Dexterity</option>
+		<option value="Stamina">Stamina</option>
+		<option value="Charisma">Charisma</option>
+		<option value="Manipulation">Manipulation</option>
+		<option value="Appearance">Appearance</option>
+		<option value="Perception">Perception</option>
+		<option value="Intelligence">Intelligence</option>
+		<option value="Wits">Wits</option>
+		<option value="Academics">Academics</option>
+		<option value="Animal Ken">Animal Ken</option>
+		<option value="Art">Art</option>
+		<option value="Athletics">Athletics</option>
+		<option value="Awareness">Awareness</option>
+		<option value="Brawl">Brawl</option>
+		<option value="Command">Command</option>
+		<option value="Control">Control</option>
+		<option value="Craft">Craft</option>
+		<option value="Empathy">Empathy</option>
+		<option value="Fortitude">Fortitude</option>
+		<option value="Integrity">Integrity</option>
+		<option value="Investigation">Investigation</option>
+		<option value="Larceny">Larceny</option>
+		<option value="Marksmanship">Marksmanship</option>
+		<option value="Medicine">Medicine</option>
+		<option value="Melee">Melee</option>
+		<option value="Occult">Occult</option>
+		<option value="Politics">Politics</option>
+		<option value="Presence">Presence</option>
+		<option value="Science">Science</option>
+		<option value="Stealth">Stealth</option>
+		<option value="Survival">Survival</option>
+		<option value="Thrown">Thrown</option>
+		<option value="Animal">Animal</option>
+		<option value="Chaos">Chaos</option>
+		<option value="Creation">Creation</option>
+		<option value="Darkness">Darkness</option>
+		<option value="Death">Death</option>
+		<option value="Earth">Earth</option>
+		<option value="Fertility">Fertility</option>
+		<option value="Fire">Fire</option>
+		<option value="Frost">Frost</option>
+		<option value="Guardian">Guardian</option>
+		<option value="Health">Health</option>
+		<option value="Illusion">Illusion</option>
+		<option value="Justice">Justice</option>
+		<option value="Magic">Magic</option>
+		<option value="Moon">Moon</option>
+		<option value="Mystery">Mystery</option>
+		<option value="Prophecy">Prophecy</option>
+		<option value="Psychopomp">Psychopomp</option>
+		<option value="Sky">Sky</option>
+		<option value="Star">Star</option>
+		<option value="Sun">Sun</option>
+		<option value="Thunder">Thunder</option>
+		<option value="War">War</option>
+		<option value="Water">Water</option>
+		<option value="DodgeDv">Dodge DV</option>
+		<option value="ParryDv">Parry DV</option>
+		<option value="soak">All Soak</option>
+		<option value="blsoak">Bashing+Lethal Soak</option>
+		<option value="asoak">Aggravated Soak</option>
+		<option value="Move">Move</option>
+		<option value="Dash">Dash</option>
+		<option value="healthLevels">-0 Health Levels</option>
+		<option value="numberFate">#Fate</option>
+		<option value="VirtueRolls">Virtue Rolls</option>
+		<option value="Conviction">Conviction</option>
+		<option value="Courage">Courage</option>
+		<option value="Duty">Duty</option>
+		<option value="Endurance">Endurance</option>
+		<option value="Expression">Expression</option>
+		<option value="Harmony">Harmony</option>
+		<option value="Intellect">Intellect</option>
+		<option value="Loyalty">Loyalty</option>
+		<option value="Order">Order</option>
+		<option value="Piety">Piety</option>
+		<option value="Valor">Valor</option>
+		<option value="Vengeance">Vengeance</option>
+		<option value="Ambition">Ambition</option>
+		<option value="Anarchy">Anarchy</option>
+		<option value="Apathy">Apathy</option>
+		<option value="Cowardice">Cowardice</option>
+		<option value="Destruction">Destruction</option>
+		<option value="Discord">Discord</option>
+		<option value="Heresy">Heresy</option>
+		<option value="Ignorance">Ignorance</option>
+		<option value="Malice">Malice</option>
+		<option value="Rapacity">Rapacity</option>
+		<option value="Treachery">Treachery</option>
+		<option value="Tyranny">Tyranny</option>
+	</select>
+	<label>Bonus/Penalty Modifier</label><br>
+	<select id="tempModifierDuration">
+		<option value="ChooseOne">Choose One</option>
+		<option value="scene">Scene</option>
+		<option value="story">Story</option>
+		<option value="permanent">Permanent</option>
+		<option value="other">Other</option>
+	</select>
+	<label>Modifier Duration</label>
+	<br>
+
+
+
+	<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="addNewTempModifier(document.getElementById('tempModifierLevelEntry').value, document.getElementById('tempModifierSelector2').value, document.getElementById('tempModifierSourceEntry').value, document.getElementById('tempModifierEntry').value, document.getElementById('tempModifierDuration').value); location.reload();">Add Modifier</button>
+
+	<hr>
+
+	<div id="fatiguePenaltyAdder"></div>
+</div>
+<!--//TEMP MODIFIERS-->
+
+
+
+
+
+
+<!-- POWERS -->
+<div class="tab-pane" id="powers">
+
+	<span>Filter by Activation Type: </span><br>
+	<button onclick="powerClickAll()">All</button>
+	<button onclick="powerClickActivated()">Activated</button>
+	<button onclick="powerClickReflexive()">Reflexive</button>
+	<button onclick="powerClickReactive()">Reactive</button>
+	<button onclick="powerClickPassive()">Passive</button>
+	<button onclick="powerClickDramatic()">Dramatic</button>
+	<button onclick="powerClickRitual()">Ritual</button>
+	<button onclick="powerClickNone()">None</button>
+	<br>
+	<span>Filter by Category: </span><br>
+	<div id="categoryFilters"></div>
+	<br>
+
+	<!-- <ul id="powersTabs" class="nav nav-tabs" data-tabs="tabs">
+		<li id="powersBoonsTab" class="active"><a href="#powersBoons" data-toggle="tab" style="color: #287D22; text-decoration: underline">SHOW BOONS</a></li>
+		<li id="powersKnacksTab"><a href="#powersKnacks" data-toggle="tab" style="color: #287D22; text-decoration: underline">SHOW KNACKS</a></li>
+	</ul> -->
+
+	<!-- <div id="my-tab-content-2" class="tab-content"> -->
+
+		<div id="powersBoons">
+			<!-- <div class="tab-pane active" id="powersBoons"> -->
+			<span id="pspBoonsDetails"></span>
+			<span id="animalBoonsDetails"></span>
+			<span id="chaosBoonsDetails"></span>
+			<span id="creationBoonsDetails"></span>
+			<span id="darknessBoonsDetails"></span>
+			<span id="deathBoonsDetails"></span>
+			<span id="earthBoonsDetails"></span>
+			<span id="fertilityBoonsDetails"></span>
+			<span id="fireBoonsDetails"></span>
+			<span id="frostBoonsDetails"></span>
+			<span id="guardianBoonsDetails"></span>
+			<span id="healthBoonsDetails"></span>
+			<span id="illusionBoonsDetails"></span>
+			<span id="justiceBoonsDetails"></span>
+			<span id="magicBoonsDetails"></span>
+			<span id="moonBoonsDetails"></span>
+			<span id="mysteryBoonsDetails"></span>
+			<span id="prophecyBoonsDetails"></span>
+			<span id="psychopompBoonsDetails"></span>
+			<span id="skyBoonsDetails"></span>
+			<span id="starBoonsDetails"></span>
+			<span id="sunBoonsDetails"></span>
+			<span id="thunderBoonsDetails"></span>
+			<span id="warBoonsDetails"></span>
+			<span id="waterBoonsDetails"></span>
+		</div>
+		<div id="powersKnacks">
+			<!-- <div class="tab-pane" id="powersKnacks"> -->
+			<span id="epicStrengthKnacksDetails"></span>
+			<span id="epicDexterityKnacksDetails"></span>
+			<span id="epicStaminaKnacksDetails"></span>
+			<span id="epicCharismaKnacksDetails"></span>
+			<span id="epicManipulationKnacksDetails"></span>
+			<span id="epicAppearanceKnacksDetails"></span>
+			<span id="epicPerceptionKnacksDetails"></span>
+			<span id="epicIntelligenceKnacksDetails"></span>
+			<span id="epicWitsKnacksDetails"></span>
+		</div>
+	<!-- </div> -->
+</div>
+<!-- //POWERS -->
+
+
+
+
+
+
+<!--UPDATE-->
+<div class="tab-pane" id="update">
+
+
+	<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="setDatabaseFromFields()">UPDATE ALL FIELDS</button>
+
+	<div class="updateHeaders"><h3><a href="#coreTraitsFields" data-toggle="collapse">Core Traits</a></h3></div>
+	<div id="coreTraitsFields" class="collapse in">
+		<input id="legendEntry" size="4" type="number" placeholder = ""><label>Legend</label><br>
+		<input id="willpowerEntry" size="4" type="number" placeholder = ""><label>Willpower</label><br>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#attributesFields" data-toggle="collapse">Attributes</a></h3></div>
+	<div id="attributesFields" class="collapse">
+		<input id="strengthEntry" size="4" type="number" placeholder = ""><label>Strength</label><br>
+		<input id="dexterityEntry" size="4" type="number" placeholder = ""><label>Dexterity</label><br>
+		<input id="staminaEntry" size="4" type="number" placeholder = ""><label>Stamina</label><br>
+		<input id="charismaEntry" size="4" type="number" placeholder = ""><label>Charisma</label><br>
+		<input id="manipulationEntry" size="4" type="number" placeholder = ""><label>Manipulation</label><br>
+		<input id="appearanceEntry" size="4" type="number" placeholder = ""><label>Appearance</label><br>
+		<input id="perceptionEntry" size="4" type="number" placeholder = ""><label>Perception</label><br>
+		<input id="intelligenceEntry" size="4" type="number" placeholder = ""><label>Intelligence</label><br>
+		<input id="witsEntry" size="4" type="number" placeholder = ""><label>Wits</label><br>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#skillsFields" data-toggle="collapse">Skills</a></h3></div>
+	<div id="skillsFields" class="collapse">
+		<input id="academicsEntry" size="4" type="number" placeholder = ""><label>Academics</label><br>
+		<input id="animalkenEntry" size="4" type="number" placeholder = ""><label>Animal Ken</label><br>
+		<input id="artEntry" size="4" type="number" placeholder = ""><label>Art</label><br>
+		<input id="athleticsEntry" size="4" type="number" placeholder = ""><label>Athletics</label><br>
+		<input id="awarenessEntry" size="4" type="number" placeholder = ""><label>Awareness</label><br>
+		<input id="brawlEntry" size="4" type="number" placeholder = ""><label>Brawl</label><br>
+		<input id="commandEntry" size="4" type="number" placeholder = ""><label>Command</label><br>
+		<input id="controlEntry" size="4" type="number" placeholder = ""><label>Control</label><br>
+		<input id="craftEntry" size="4" type="number" placeholder = ""><label>Craft</label><br>
+		<input id="empathyEntry" size="4" type="number" placeholder = ""><label>Empathy</label><br>
+		<input id="fortitudeEntry" size="4" type="number" placeholder = ""><label>Fortitude</label><br>
+		<input id="integrityEntry" size="4" type="number" placeholder = ""><label>Integrity</label><br>
+		<input id="investigationEntry" size="4" type="number" placeholder = ""><label>Investigation</label><br>
+		<input id="larcenyEntry" size="4" type="number" placeholder = ""><label>Larceny</label><br>
+		<input id="marksmanshipEntry" size="4" type="number" placeholder = ""><label>Marksmanship</label><br>
+		<input id="medicineEntry" size="4" type="number" placeholder = ""><label>Medicine</label><br>
+		<input id="meleeEntry" size="4" type="number" placeholder = ""><label>Melee</label><br>
+		<input id="occultEntry" size="4" type="number" placeholder = ""><label>Occult</label><br>
+		<input id="politicsEntry" size="4" type="number" placeholder = ""><label>Politics</label><br>
+		<input id="presenceEntry" size="4" type="number" placeholder = ""><label>Presence</label><br>
+		<input id="scienceEntry" size="4" type="number" placeholder = ""><label>Science</label><br>
+		<input id="stealthEntry" size="4" type="number" placeholder = ""><label>Stealth</label><br>
+		<input id="survivalEntry" size="4" type="number" placeholder = ""><label>Survival</label><br>
+		<input id="thrownEntry" size="4" type="number" placeholder = ""><label>Thrown</label><br>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#epicattributeFields" data-toggle="collapse">Epic Attributes</a></h3></div>
+	<div id="epicattributeFields" class="collapse">
+		<input id="epicStrengthEntry" size="4" type="number" placeholder = ""><label>Epic Strength</label><br>
+		<input id="epicDexterityEntry" size="4" type="number" placeholder = ""><label>Epic Dexterity</label><br>
+		<input id="epicStaminaEntry" size="4" type="number" placeholder = ""><label>Epic Stamina</label><br>
+		<input id="epicCharismaEntry" size="4" type="number" placeholder = ""><label>Epic Charisma</label><br>
+		<input id="epicManipulationEntry" size="4" type="number" placeholder = ""><label>Epic Manipulation</label><br>
+		<input id="epicAppearanceEntry" size="4" type="number" placeholder = ""><label>Epic Appearance</label><br>
+		<input id="epicPerceptionEntry" size="4" type="number" placeholder = ""><label>Epic Perception</label><br>
+		<input id="epicIntelligenceEntry" size="4" type="number" placeholder = ""><label>Epic Intelligence</label><br>
+		<input id="epicWitsEntry" size="4" type="number" placeholder = ""><label>Epic Wits</label><br>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#virtueFields" data-toggle="collapse">Virtues</a></h3></div>
+	<div id="virtueFields" class="collapse">
+		<input id="convictionEntry" size="4" type="number" placeholder = ""><label>Conviction</label><br>
+		<input id="courageEntry" size="4" type="number" placeholder = ""><label>Courage</label><br>
+		<input id="dutyEntry" size="4" type="number" placeholder = ""><label>Duty</label><br>
+		<input id="enduranceEntry" size="4" type="number" placeholder = ""><label>Endurance</label><br>
+		<input id="expressionEntry" size="4" type="number" placeholder = ""><label>Expression</label><br>
+		<input id="harmonyEntry" size="4" type="number" placeholder = ""><label>Harmony</label><br>
+		<input id="intellectEntry" size="4" type="number" placeholder = ""><label>Intellect</label><br>
+		<input id="loyaltyEntry" size="4" type="number" placeholder = ""><label>Loyalty</label><br>
+		<input id="orderEntry" size="4" type="number" placeholder = ""><label>Order</label><br>
+		<input id="pietyEntry" size="4" type="number" placeholder = ""><label>Piety</label><br>
+		<input id="valorEntry" size="4" type="number" placeholder = ""><label>Valor</label><br>
+		<input id="vengeanceEntry" size="4" type="number" placeholder = ""><label>Vengeance</label><br>
+		<input id="ambitionEntry" size="4" type="number" placeholder = ""><label>Ambition</label><br>
+		<input id="anarchyEntry" size="4" type="number" placeholder = ""><label>Anarchy</label><br>
+		<input id="apathyEntry" size="4" type="number" placeholder = ""><label>Apathy</label><br>
+		<input id="cowardiceEntry" size="4" type="number" placeholder = ""><label>Cowardice</label><br>
+		<input id="destructionEntry" size="4" type="number" placeholder = ""><label>Destruction</label><br>
+		<input id="discordEntry" size="4" type="number" placeholder = ""><label>Discord</label><br>
+		<input id="heresyEntry" size="4" type="number" placeholder = ""><label>Heresy</label><br>
+		<input id="ignoranceEntry" size="4" type="number" placeholder = ""><label>Ignorance</label><br>
+		<input id="maliceEntry" size="4" type="number" placeholder = ""><label>Malice</label><br>
+		<input id="rapacityEntry" size="4" type="number" placeholder = ""><label>Rapacity</label><br>
+		<input id="treacheryEntry" size="4" type="number" placeholder = ""><label>Treachery</label><br>
+		<input id="tyrannyEntry" size="4" type="number" placeholder = ""><label>Tyranny</label><br>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#knackFields" data-toggle="collapse">Knacks</a></h3></div>
+	<div id="knackFields" class="collapse" style="padding-left: 40px;">
+
+		<div class="updateHeaders"><h3><a href="#epicStrengthKnackFields" data-toggle="collapse">Epic Strength Knacks</a></h3></div>
+		<div id="epicStrengthKnackFields" class="collapse">
+			<input id="armorCrusherEntry" type="checkbox" placeholder = ""><label>Armor Crusher</label><br>
+			<input id="atlasShrugEntry" type="checkbox" placeholder = ""><label>Atlas Shrug</label><br>
+			<input id="bulkSmashEntry" type="checkbox" placeholder = ""><label>Bulk Smash</label><br>
+			<input id="clobberingTimeEntry" type="checkbox" placeholder = ""><label>Clobbering Time</label><br>
+			<input id="crushingGripEntry" type="checkbox" placeholder = ""><label>Crushing Grip</label><br>
+			<input id="disfiguringAttackEntry" type="checkbox" placeholder = ""><label>Disfiguring Attack</label><br>
+			<input id="divineBoundEntry" type="checkbox" placeholder = ""><label>Divine Bound</label><br>
+			<input id="divineRampageEntry" type="checkbox" placeholder = ""><label>Divine Rampage</label><br>
+			<input id="divineWrathEntry" type="checkbox" placeholder = ""><label>Divine Wrath</label><br>
+			<input id="empoweredDeflectionEntry" type="checkbox" placeholder = ""><label>Empowered Deflection</label><br>
+			<input id="forceWithFinesseEntry" type="checkbox" placeholder = ""><label>Force With Finesse</label><br>
+			<input id="getAGripEntry" type="checkbox" placeholder = ""><label>Get a Grip</label><br>
+			<input id="hangOnEntry" type="checkbox" placeholder = ""><label>Hang On</label><br>
+			<input id="heavyHitterEntry" type="checkbox" placeholder = ""><label>Heavy Hitter</label><br>
+			<input id="herculeanGripEntry" type="checkbox" placeholder = ""><label>Herculean Grip</label><br>
+			<input id="holyBoundEntry" type="checkbox" placeholder = ""><label>Holy Bound</label><br>
+			<input id="holyRampageEntry" type="checkbox" placeholder = ""><label>Holy Rampage</label><br>
+			<input id="hurlToTheHorizonEntry" type="checkbox" placeholder = ""><label>Hurl to the Horizon</label><br>
+			<input id="hurlToTheMoonEntry" type="checkbox" placeholder = ""><label>Hurl to the Moon</label><br>
+			<input id="kingsOfMetalEntry" type="checkbox" placeholder = ""><label>Kings of Metal</label><br>
+			<input id="knockbackAttackEntry" type="checkbox" placeholder = ""><label>Knockback Attack</label><br>
+			<input id="knockbackWaveEntry" type="checkbox" placeholder = ""><label>Knockback Wave</label><br>
+			<input id="makingItLookEasyEntry" type="checkbox" placeholder = ""><label>Making It Look Easy</label><br>
+			<input id="mightyHeaveEntry" type="checkbox" placeholder = ""><label>Mighty Heave</label><br>
+			<input id="reboundEntry" type="checkbox" placeholder = ""><label>Rebound</label><br>
+			<input id="shockwaveEntry" type="checkbox" placeholder = ""><label>Shockwave</label><br>
+			<input id="stalwartGripEntry" type="checkbox" placeholder = ""><label>Stalwart Grip</label><br>
+			<input id="stunningBlowEntry" type="checkbox" placeholder = ""><label>Stunning Blow</label><br>
+			<input id="titaniumToolsEntry" type="checkbox" placeholder = ""><label>Titanium Tools</label><br>
+			<input id="upliftingMightEntry" type="checkbox" placeholder = ""><label>Uplifting Might</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicDexterityKnackFields" data-toggle="collapse">Epic Dexterity Knacks</a></h3></div>
+		<div id="epicDexterityKnackFields" class="collapse">
+			<input id="blitzkriegEntry" type="checkbox" placeholder = ""><label>Blitzkrieg</label><br>
+			<input id="bounceEntry" type="checkbox" placeholder = ""><label>Bounce</label><br>
+			<input id="catsGraceEntry" type="checkbox" placeholder = ""><label>Cat's Grace</label><br>
+			<input id="divineBalanceEntry" type="checkbox" placeholder = ""><label>Divine Balance</label><br>
+			<input id="divineSmithEntry" type="checkbox" placeholder = ""><label>Divine Smith</label><br>
+			<input id="escapeArtistEntry" type="checkbox" placeholder = ""><label>Escape Artist</label><br>
+			<input id="fastAsThoughtEntry" type="checkbox" placeholder = ""><label>Fast as Thought</label><br>
+			<input id="flexibilityEntry" type="checkbox" placeholder = ""><label>Flexibility</label><br>
+			<input id="lightningSprinterEntry" type="checkbox" placeholder = ""><label>Lightning Sprinter</label><br>
+			<input id="microscopicPrecisionEntry" type="checkbox" placeholder = ""><label>Microscopic Precision</label><br>
+			<input id="mightierThanTheSwordEntry" type="checkbox" placeholder = ""><label>Mightier Than The Sword</label><br>
+			<input id="monkeyClimberEntry" type="checkbox" placeholder = ""><label>Monkey Climber</label><br>
+			<input id="omnidexterityEntry" type="checkbox" placeholder = ""><label>Omnidexterity</label><br>
+			<input id="perfectClimberEntry" type="checkbox" placeholder = ""><label>Perfect Climber</label><br>
+			<input id="quickerThanTheEyeEntry" type="checkbox" placeholder = ""><label>Quicker Than The Eye</label><br>
+			<input id="rapidStrikeEntry" type="checkbox" placeholder = ""><label>Rapid Strike</label><br>
+			<input id="ricochetSymphonyEntry" type="checkbox" placeholder = ""><label>Ricochet Symphony</label><br>
+			<input id="rollWithItEntry" type="checkbox" placeholder = ""><label>Roll With It</label><br>
+			<input id="shotToTheHeartEntry" type="checkbox" placeholder = ""><label>Shot to the Heart</label><br>
+			<input id="spiderClimberEntry" type="checkbox" placeholder = ""><label>Spider Climber</label><br>
+			<input id="trickShooterEntry" type="checkbox" placeholder = ""><label>Trick Shooter</label><br>
+			<input id="untouchableAllyEntry" type="checkbox" placeholder = ""><label>Untouchable Ally</label><br>
+			<input id="untouchableOpponentEntry" type="checkbox" placeholder = ""><label>Untouchable Opponent</label><br>
+			<input id="whirlwindShieldEntry" type="checkbox" placeholder = ""><label>Whirlwind Shield</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicStaminaKnackFields" data-toggle="collapse">Epic Stamina Knacks</a></h3></div>
+		<div id="epicStaminaKnackFields" class="collapse">
+			<input id="bezoarEntry" type="checkbox" placeholder = ""><label>Bezoar</label><br>
+			<input id="bodyArmorEntry" type="checkbox" placeholder = ""><label>Body Armor</label><br>
+			<input id="bottomlessPitEntry" type="checkbox" placeholder = ""><label>Bottomless Pit</label><br>
+			<input id="brickWallEntry" type="checkbox" placeholder = ""><label>Brick Wall</label><br>
+			<input id="damageConversionEntry" type="checkbox" placeholder = ""><label>Damage Conversion</label><br>
+			<input id="devourerEntry" type="checkbox" placeholder = ""><label>Devourer</label><br>
+			<input id="divineDamageConversionEntry" type="checkbox" placeholder = ""><label>Divine Damage Conversion</label><br>
+			<input id="divineFortitudeEntry" type="checkbox" placeholder = ""><label>Divine Fortitude</label><br>
+			<input id="dragonBloodEntry" type="checkbox" placeholder = ""><label>Dragon Blood</label><br>
+			<input id="extendedYouthEntry" type="checkbox" placeholder = ""><label>Extended Youth</label><br>
+			<input id="holyFortitudeEntry" type="checkbox" placeholder = ""><label>Holy Fortitude</label><br>
+			<input id="impenetrableEntry" type="checkbox" placeholder = ""><label>Impenetrable</label><br>
+			<input id="innerFurnaceEntry" type="checkbox" placeholder = ""><label>Inner Furnace</label><br>
+			<input id="internalRefineryEntry" type="checkbox" placeholder = ""><label>Internal Refinery</label><br>
+			<input id="keepsOnTickingEntry" type="checkbox" placeholder = ""><label>Keeps On Ticking</label><br>
+			<input id="lastActEntry" type="checkbox" placeholder = ""><label>Last Act</label><br>
+			<input id="ragingBullEntry" type="checkbox" placeholder = ""><label>Raging Bull</label><br>
+			<input id="regenerationEntry" type="checkbox" placeholder = ""><label>Regeneration</label><br>
+			<input id="scorpionBloodEntry" type="checkbox" placeholder = ""><label>Scorpion Blood</label><br>
+			<input id="secondWindEntry" type="checkbox" placeholder = ""><label>Second Wind</label><br>
+			<input id="selfHealingEntry" type="checkbox" placeholder = ""><label>Self Healing</label><br>
+			<input id="serpentBloodEntry" type="checkbox" placeholder = ""><label>Serpent Blood</label><br>
+			<input id="tirelessWorkerEntry" type="checkbox" placeholder = ""><label>Tireless Worker</label><br>
+			<input id="toughAsNailsEntry" type="checkbox" placeholder = ""><label>Tough as Nails</label><br>
+			<input id="trueGritEntry" type="checkbox" placeholder = ""><label>True Grit</label><br>
+			<input id="unbreakableEntry" type="checkbox" placeholder = ""><label>Unbreakable</label><br>
+			<input id="underPressureEntry" type="checkbox" placeholder = ""><label>Under Pressure</label><br>
+			<input id="vitalEssenceEntry" type="checkbox" placeholder = ""><label>Vital Essence</label><br>
+			<input id="whalesBreathEntry" type="checkbox" placeholder = ""><label>Whale's Breath</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicCharismaKnackFields" data-toggle="collapse">Epic Charisma Knacks</a></h3></div>
+		<div id="epicCharismaKnackFields" class="collapse">
+			<input id="attentionPleaseEntry" type="checkbox" placeholder = ""><label>Attention Please</label><br>
+			<input id="audienceParticipationEntry" type="checkbox" placeholder = ""><label>Audience Participation</label><br>
+			<input id="believeYourOwnPressEntry" type="checkbox" placeholder = ""><label>Believe Your Own Press</label><br>
+			<input id="benefitOfTheDoubtEntry" type="checkbox" placeholder = ""><label>Benefit of the Doubt</label><br>
+			<input id="BFFEntry" type="checkbox" placeholder = ""><label>BFF</label><br>
+			<input id="blessingOfImportanceEntry" type="checkbox" placeholder = ""><label>Blessing of Importance</label><br>
+			<input id="borrowedCredibilityEntry" type="checkbox" placeholder = ""><label>Borrowed Credibility</label><br>
+			<input id="boysWillBeBoysEntry" type="checkbox" placeholder = ""><label>Boys Will Be Boys / Girls Just Wanna Have Fun</label><br>
+			<input id="charmerEntry" type="checkbox" placeholder = ""><label>Charmer</label><br>
+			<input id="commandingPresenceEntry" type="checkbox" placeholder = ""><label>Commanding Presence</label><br>
+			<input id="crowdControlEntry" type="checkbox" placeholder = ""><label>Crowd Control</label><br>
+			<input id="cultOfPersonalityEntry" type="checkbox" placeholder = ""><label>Cult of Personality</label><br>
+			<input id="engenderLoveEntry" type="checkbox" placeholder = ""><label>Engender Love</label><br>
+			<input id="fearOfGodEntry" type="checkbox" placeholder = ""><label>Fear of God</label><br>
+			<input id="filibusterEntry" type="checkbox" placeholder = ""><label>Filibuster</label><br>
+			<input id="finalCountdownEntry" type="checkbox" placeholder = ""><label>Final Countdown</label><br>
+			<input id="haplessCoolEntry" type="checkbox" placeholder = ""><label>Hapless Cool</label><br>
+			<input id="inspirationalFigureEntry" type="checkbox" placeholder = ""><label>Inspirational Figure</label><br>
+			<input id="instantSeminarEntry" type="checkbox" placeholder = ""><label>Instant Seminar</label><br>
+			<input id="intoGloryRideEntry" type="checkbox" placeholder = ""><label>Into Glory Ride</label><br>
+			<input id="lifeOfThePartyEntry" type="checkbox" placeholder = ""><label>Life of the Party</label><br>
+			<input id="neverSayDieEntry" type="checkbox" placeholder = ""><label>Never Say Die</label><br>
+			<input id="paragonOfVirtueEntry" type="checkbox" placeholder = ""><label>Paragon of Virtue</label><br>
+			<input id="peakPerformanceEntry" type="checkbox" placeholder = ""><label>Peak Performance</label><br>
+			<input id="piedPiperEntry" type="checkbox" placeholder = ""><label>Pied Piper</label><br>
+			<input id="polyphonyEntry" type="checkbox" placeholder = ""><label>Polyphony</label><br>
+			<input id="preachOnEntry" type="checkbox" placeholder = ""><label>Preach On</label><br>
+			<input id="righteousIndignationEntry" type="checkbox" placeholder = ""><label>Righteous Indignation</label><br>
+			<input id="snapOutOfItEntry" type="checkbox" placeholder = ""><label>Snap Out Of It</label><br>
+			<input id="steelyGazeEntry" type="checkbox" placeholder = ""><label>Steely Gaze</label><br>
+			<input id="unimpeachableReferenceEntry" type="checkbox" placeholder = ""><label>Unimpeachable Reference</label><br>
+			<input id="widespreadAppealEntry" type="checkbox" placeholder = ""><label>Widespread Appeal</label><br>
+			<input id="youCanDoItEntry" type="checkbox" placeholder = ""><label>You Can Do It!</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicManipulationKnackFields" data-toggle="collapse">Epic Manipulation Knacks</a></h3></div>
+		<div id="epicManipulationKnackFields" class="collapse">
+			<input id="andNothingButTheTruthEntry" type="checkbox" placeholder = ""><label>And Nothing But The Truth</label><br>
+			<input id="blurtItOutEntry" type="checkbox" placeholder = ""><label>Blurt It Out</label><br>
+			<input id="cantPlayAPlayerEntry" type="checkbox" placeholder = ""><label>Can't Play a Player</label><br>
+			<input id="commandmentsEntry" type="checkbox" placeholder = ""><label>Commandments</label><br>
+			<input id="deprogrammingEntry" type="checkbox" placeholder = ""><label>Deprogramming</label><br>
+			<input id="dontMindMeEntry" type="checkbox" placeholder = ""><label>Don't Mind Me</label><br>
+			<input id="extendedInfluenceEntry" type="checkbox" placeholder = ""><label>Extended Influence</label><br>
+			<input id="godsHonestEntry" type="checkbox" placeholder = ""><label>God's Honest</label><br>
+			<input id="hardSellEntry" type="checkbox" placeholder = ""><label>Hard Sell</label><br>
+			<input id="implantFalseMemoryEntry" type="checkbox" placeholder = ""><label>Implant False Memory</label><br>
+			<input id="instantHypnosisEntry" type="checkbox" placeholder = ""><label>Instant Hypnosis</label><br>
+			<input id="killTheMessengerEntry" type="checkbox" placeholder = ""><label>Kill the Messenger</label><br>
+			<input id="knowingGlanceEntry" type="checkbox" placeholder = ""><label>Knowing Glance</label><br>
+			<input id="massHypnosisEntry" type="checkbox" placeholder = ""><label>Mass Hypnosis</label><br>
+			<input id="neverForgetEntry" type="checkbox" placeholder = ""><label>Never Forget</label><br>
+			<input id="notTheFaceEntry" type="checkbox" placeholder = ""><label>Not The Face!</label><br>
+			<input id="openingActEntry" type="checkbox" placeholder = ""><label>Opening Act</label><br>
+			<input id="overtOrderEntry" type="checkbox" placeholder = ""><label>Overt Order</label><br>
+			<input id="rumorMillEntry" type="checkbox" placeholder = ""><label>Rumor Mill</label><br>
+			<input id="secondhandPersuasionEntry" type="checkbox" placeholder = ""><label>Secondhand Persuasion</label><br>
+			<input id="seductiveMienEntry" type="checkbox" placeholder = ""><label>Seductive Mien</label><br>
+			<input id="silverTongueEntry" type="checkbox" placeholder = ""><label>Silver Tongue</label><br>
+			<input id="stenchOfGuiltEntry" type="checkbox" placeholder = ""><label>Stench of Guilt</label><br>
+			<input id="takesOneToKnowOneEntry" type="checkbox" placeholder = ""><label>Takes One To Know One</label><br>
+			<input id="treacheryMostFoulEntry" type="checkbox" placeholder = ""><label>Treachery Most Foul</label><br>
+			<input id="trendsetterEntry" type="checkbox" placeholder = ""><label>Trendsetter</label><br>
+			<input id="whatTheEntry" type="checkbox" placeholder = ""><label>What The?!</label><br>
+			<input id="wordsWillNeverHurtMeEntry" type="checkbox" placeholder = ""><label>Words Will Never Hurt Me</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicAppearanceKnackFields" data-toggle="collapse">Epic Appearance Knacks</a></h3></div>
+		<div id="epicAppearanceKnackFields" class="collapse">
+			<input id="asGoodAsYoullEverGetEntry" type="checkbox" placeholder = ""><label>As Good As You'll Ever Get</label><br>
+			<input id="auraOfDreadEntry" type="checkbox" placeholder = ""><label>Aura of Dread</label><br>
+			<input id="blindingVisageEntry" type="checkbox" placeholder = ""><label>Blinding Visage</label><br>
+			<input id="centerOfAttentionEntry" type="checkbox" placeholder = ""><label>Center of Attention</label><br>
+			<input id="comeHitherEntry" type="checkbox" placeholder = ""><label>Come Hither</label><br>
+			<input id="compellingPresenceEntry" type="checkbox" placeholder = ""><label>Compelling Presence</label><br>
+			<input id="detailVariationEntry" type="checkbox" placeholder = ""><label>Detail Variation</label><br>
+			<input id="doinFineEntry" type="checkbox" placeholder = ""><label>Doin' Fine</label><br>
+			<input id="doNotWantEntry" type="checkbox" placeholder = ""><label>Do Not Want</label><br>
+			<input id="dreadfulMienEntry" type="checkbox" placeholder = ""><label>Dreadful Mien</label><br>
+			<input id="horrifyingVisageEntry" type="checkbox" placeholder = ""><label>Horrifying Visage</label><br>
+			<input id="ifLooksCouldKillEntry" type="checkbox" placeholder = ""><label>If Looks Could Kill</label><br>
+			<input id="inescapableVisionEntry" type="checkbox" placeholder = ""><label>Inescapable Vision</label><br>
+			<input id="inspiringPresenceEntry" type="checkbox" placeholder = ""><label>Inspiring Presence</label><br>
+			<input id="lastingImpressionEntry" type="checkbox" placeholder = ""><label>Lasting Impression</label><br>
+			<input id="maskTheDivineEntry" type="checkbox" placeholder = ""><label>Mask the Divine</label><br>
+			<input id="myEyesAreUpHereEntry" type="checkbox" placeholder = ""><label>My Eyes Are Up Here</label><br>
+			<input id="personalMagnetismEntry" type="checkbox" placeholder = ""><label>Personal Magnetism</label><br>
+			<input id="rockHardAbsEntry" type="checkbox" placeholder = ""><label>Rock Hard Abs / Chainmail Bikini</label><br>
+			<input id="seductionEntry" type="checkbox" placeholder = ""><label>Seduction</label><br>
+			<input id="serpentsGazeEntry" type="checkbox" placeholder = ""><label>Serpent's Gaze</label><br>
+			<input id="tailorMadeEntry" type="checkbox" placeholder = ""><label>Tailor Made</label><br>
+			<input id="undeniableResemblanceEntry" type="checkbox" placeholder = ""><label>Undeniable Resemblance</label><br>
+			<input id="unearthlyAppearanceEntry" type="checkbox" placeholder = ""><label>Unearthly Appearance</label><br>
+			<input id="unusualAlterationEntry" type="checkbox" placeholder = ""><label>Unusual Alteration</label><br>
+			<input id="visageGreatAndTerribleEntry" type="checkbox" placeholder = ""><label>Visage Great and Terrible</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicPerceptionKnackFields" data-toggle="collapse">Epic Perception Knacks</a></h3></div>
+		<div id="epicPerceptionKnackFields" class="collapse">
+			<input id="clairvoyanceEntry" type="checkbox" placeholder = ""><label>Clairvoyance</label><br>
+			<input id="crackShotEntry" type="checkbox" placeholder = ""><label>Crack Shot</label><br>
+			<input id="electromagneticPerceptionEntry" type="checkbox" placeholder = ""><label>Electromagnetic Perception</label><br>
+			<input id="environmentalAwarenessEntry" type="checkbox" placeholder = ""><label>Environmental Awareness</label><br>
+			<input id="foolMeOnceEntry" type="checkbox" placeholder = ""><label>Fool Me Once</label><br>
+			<input id="inYourDreamsEntry" type="checkbox" placeholder = ""><label>In Your Dreams</label><br>
+			<input id="lethalPrecisionEntry" type="checkbox" placeholder = ""><label>Lethal Precision</label><br>
+			<input id="parallelAttentionEntry" type="checkbox" placeholder = ""><label>Parallel Attention</label><br>
+			<input id="perfectPitchEntry" type="checkbox" placeholder = ""><label>Perfect Pitch</label><br>
+			<input id="predatoryFocusEntry" type="checkbox" placeholder = ""><label>Predatory Focus</label><br>
+			<input id="radarSenseEntry" type="checkbox" placeholder = ""><label>Radar Sense</label><br>
+			<input id="realMcCoyEntry" type="checkbox" placeholder = ""><label>Real McCoy</label><br>
+			<input id="refinedPalateEntry" type="checkbox" placeholder = ""><label>Refined Palate</label><br>
+			<input id="selectivePalateEntry" type="checkbox" placeholder = ""><label>Selective Palate</label><br>
+			<input id="senseFatebondEntry" type="checkbox" placeholder = ""><label>Sense Fatebond</label><br>
+			<input id="scentTheDivineEntry" type="checkbox" placeholder = ""><label>Scent the Divine</label><br>
+			<input id="sharpshooterEntry" type="checkbox" placeholder = ""><label>Sharpshooter</label><br>
+			<input id="subliminalWarningEntry" type="checkbox" placeholder = ""><label>Subliminal Warning</label><br>
+			<input id="subvocalizationEntry" type="checkbox" placeholder = ""><label>Subvocalization</label><br>
+			<input id="supernalHunterEntry" type="checkbox" placeholder = ""><label>Supernal Hunter</label><br>
+			<input id="telescopicVisionEntry" type="checkbox" placeholder = ""><label>Telescopic Vision</label><br>
+			<input id="unfailingRecognitionEntry" type="checkbox" placeholder = ""><label>Unfailing Recognition</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicIntelligenceKnackFields" data-toggle="collapse">Epic Intelligence Knacks</a></h3></div>
+		<div id="epicIntelligenceKnackFields" class="collapse">
+			<input id="appliedAcademicsEntry" type="checkbox" placeholder = ""><label>Applied Academics</label><br>
+			<input id="artOfWarEntry" type="checkbox" placeholder = ""><label>Art of War</label><br>
+			<input id="blockadeOfReasonEntry" type="checkbox" placeholder = ""><label>Blockade of Reason</label><br>
+			<input id="cipherEntry" type="checkbox" placeholder = ""><label>Cipher</label><br>
+			<input id="conceptToExecutionEntry" type="checkbox" placeholder = ""><label>Concept to Execution</label><br>
+			<input id="fastLearnerEntry" type="checkbox" placeholder = ""><label>Fast Learner</label><br>
+			<input id="forewarnedIsForearmedEntry" type="checkbox" placeholder = ""><label>Forewarned is Forearmed</label><br>
+			<input id="geniusEntry" type="checkbox" placeholder = ""><label>Genius</label><br>
+			<input id="inspirationEntry" type="checkbox" placeholder = ""><label>Inspiration</label><br>
+			<input id="instantTranslationEntry" type="checkbox" placeholder = ""><label>Instant Translation</label><br>
+			<input id="intellectualJuggernautEntry" type="checkbox" placeholder = ""><label>Intellectual Juggernaut</label><br>
+			<input id="juryRigEntry" type="checkbox" placeholder = ""><label>Jury Rig</label><br>
+			<input id="knowingIsHalfTheBattleEntry" type="checkbox" placeholder = ""><label>Knowing Is Half The Battle</label><br>
+			<input id="languageMasteryEntry" type="checkbox" placeholder = ""><label>Language Mastery</label><br>
+			<input id="literatiEntry" type="checkbox" placeholder = ""><label>Literati</label><br>
+			<input id="mathGeniusEntry" type="checkbox" placeholder = ""><label>Math Genius</label><br>
+			<input id="mentalVoiceEntry" type="checkbox" placeholder = ""><label>Mental Voice</label><br>
+			<input id="perfectMemoryEntry" type="checkbox" placeholder = ""><label>Perfect Memory</label><br>
+			<input id="refugeInLogicEntry" type="checkbox" placeholder = ""><label>Refuge In Logic</label><br>
+			<input id="remoteControlEntry" type="checkbox" placeholder = ""><label>Remote Control</label><br>
+			<input id="renaissanceManEntry" type="checkbox" placeholder = ""><label>Renaissance Man</label><br>
+			<input id="speedReaderEntry" type="checkbox" placeholder = ""><label>Speed Reader</label><br>
+			<input id="starPupilEntry" type="checkbox" placeholder = ""><label>Star Pupil</label><br>
+			<input id="studentBecomesTheMasterEntry" type="checkbox" placeholder = ""><label>Student Becomes The Master</label><br>
+			<input id="tacticalPlanningEntry" type="checkbox" placeholder = ""><label>Tactical Planning</label><br>
+			<input id="teachingProdigyEntry" type="checkbox" placeholder = ""><label>Teaching Prodigy</label><br>
+			<input id="telepathyEntry" type="checkbox" placeholder = ""><label>Telepathy</label><br>
+			<input id="vectorEntry" type="checkbox" placeholder = ""><label>Vector</label><br>
+			<input id="weakLinkEntry" type="checkbox" placeholder = ""><label>Weak Link</label><br>
+			<input id="wirelessInterfaceEntry" type="checkbox" placeholder = ""><label>Wireless Interface</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#epicWitsKnackFields" data-toggle="collapse">Epic Wits Knacks</a></h3></div>
+		<div id="epicWitsKnackFields" class="collapse">
+			<input id="adaptiveFightingEntry" type="checkbox" placeholder = ""><label>Adaptive Fighting</label><br>
+			<input id="betweenTheTicksEntry" type="checkbox" placeholder = ""><label>Between the Ticks</label><br>
+			<input id="bornBehindTheWheelEntry" type="checkbox" placeholder = ""><label>Born Behind the Wheel</label><br>
+			<input id="defensiveDrivingEntry" type="checkbox" placeholder = ""><label>Defensive Driving</label><br>
+			<input id="destructivePotentialEntry" type="checkbox" placeholder = ""><label>Destructive Potential</label><br>
+			<input id="eternalVigilanceEntry" type="checkbox" placeholder = ""><label>Eternal Vigilance</label><br>
+			<input id="evasiveActionEntry" type="checkbox" placeholder = ""><label>Evasive Action</label><br>
+			<input id="instantAssessmentEntry" type="checkbox" placeholder = ""><label>Instant Assessment</label><br>
+			<input id="instantInvestigatorEntry" type="checkbox" placeholder = ""><label>Instant Investigator</label><br>
+			<input id="jackOfAllTradesEntry" type="checkbox" placeholder = ""><label>Jack of all Trades</label><br>
+			<input id="lightningReflexesEntry" type="checkbox" placeholder = ""><label>Lightning Reflexes</label><br>
+			<input id="meditativeFocusEntry" type="checkbox" placeholder = ""><label>Meditative Focus</label><br>
+			<input id="monkeyInTheMiddleEntry" type="checkbox" placeholder = ""><label>Monkey in the Middle</label><br>
+			<input id="multitaskingEntry" type="checkbox" placeholder = ""><label>Multitasking</label><br>
+			<input id="openingGambitEntry" type="checkbox" placeholder = ""><label>Opening Gambit</label><br>
+			<input id="openingSalvoEntry" type="checkbox" placeholder = ""><label>Opening Salvo</label><br>
+			<input id="perfectImpostorEntry" type="checkbox" placeholder = ""><label>Perfect Impostor</label><br>
+			<input id="psychicProfilerEntry" type="checkbox" placeholder = ""><label>Psychic Profiler</label><br>
+			<input id="rapierWitEntry" type="checkbox" placeholder = ""><label>Rapier Wit</label><br>
+			<input id="readyFireAimEntry" type="checkbox" placeholder = ""><label>Ready Fire Aim</label><br>
+			<input id="scathingRetortEntry" type="checkbox" placeholder = ""><label>Scathing Retort</label><br>
+			<input id="selflessSpeedEntry" type="checkbox" placeholder = ""><label>Selfless Speed</label><br>
+			<input id="socialChameleonEntry" type="checkbox" placeholder = ""><label>Social Chameleon</label><br>
+			<input id="surgeOfActionEntry" type="checkbox" placeholder = ""><label>Surge of Action</label><br>
+			<input id="talentMirrorEntry" type="checkbox" placeholder = ""><label>Talent Mirror</label><br>
+			<input id="unconquerableChallengeEntry" type="checkbox" placeholder = ""><label>Unconquerable Challenge</label><br>
+		</div>
+
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#boonFields" data-toggle="collapse">Boons</a></h3></div>
+	<div id="boonFields" class="collapse" style="padding-left: 40px;">
+
+		<div class="updateHeaders"><h3><a href="#pspBoonFields" data-toggle="collapse"><span id="pspBoonsHeader"></span></a></h3></div>
+		<div id="pspBoonFields" class="collapse">
+			<input id="pspLevel1Entry" type="checkbox" placeholder = ""><label><span id="psp1Label"></span></label><br>
+			<input id="pspLevel2Entry" type="checkbox" placeholder = ""><label><span id="psp2Label"></span></label><br>
+			<input id="pspLevel3Entry" type="checkbox" placeholder = ""><label><span id="psp3Label"></span></label><br>
+			<input id="pspLevel4Entry" type="checkbox" placeholder = ""><label><span id="psp4Label"></span></label><br>
+			<input id="pspLevel5Entry" type="checkbox" placeholder = ""><label><span id="psp5Label"></span></label><br>
+			<input id="pspLevel6Entry" type="checkbox" placeholder = ""><label><span id="psp6Label"></span></label><br>
+			<input id="pspLevel7Entry" type="checkbox" placeholder = ""><label><span id="psp7Label"></span></label><br>
+			<input id="pspLevel8Entry" type="checkbox" placeholder = ""><label><span id="psp8Label"></span></label><br>
+			<input id="pspLevel9Entry" type="checkbox" placeholder = ""><label><span id="psp9Label"></span></label><br>
+			<input id="pspLevel10Entry" type="checkbox" placeholder = ""><label><span id="psp10Label"></span></label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#animalBoonFields" data-toggle="collapse">Animal</a></h3></div>
+		<div id="animalBoonFields" class="collapse">
+			<input id="animalCommunicationEntry" type="checkbox" placeholder = ""><label>1 - Animal Communication</label><br>
+			<input id="totemicMessengerEntry" type="checkbox" placeholder = ""><label>1 - Totemic Messenger</label><br>
+			<input id="animalMindEntry" type="checkbox" placeholder = ""><label>2 - Animal Mind</label><br>
+			<input id="beastsBlessingEntry" type="checkbox" placeholder = ""><label>2 - Beast's Blessing</label><br>
+			<input id="callOfTheWildEntry" type="checkbox" placeholder = ""><label>3 - Call of the Wild</label><br>
+			<input id="animalAspectEntry" type="checkbox" placeholder = ""><label>3 - Animal Aspect</label><br>
+			<input id="totemicSpiritEntry" type="checkbox" placeholder = ""><label>4 - Totemic Spirit</label><br>
+			<input id="animalFormEntry" type="checkbox" placeholder = ""><label>4 - Animal Form</label><br>
+			<input id="beastEyeEntry" type="checkbox" placeholder = ""><label>5 - Beast Eye</label><br>
+			<input id="animalFeatureEntry" type="checkbox" placeholder = ""><label>5 - Animal Featuer</label><br>
+			<input id="animalAuraEntry" type="checkbox" placeholder = ""><label>6 - Animal Aura</label><br>
+			<input id="createAnimalEntry" type="checkbox" placeholder = ""><label>7 - Create Animal</label><br>
+			<input id="animalEssenceEntry" type="checkbox" placeholder = ""><label>8 - Animal Essence</label><br>
+			<input id="magicalCreatureEntry" type="checkbox" placeholder = ""><label>8 - Magical Creature</label><br>
+			<input id="sacredBeastEntry" type="checkbox" placeholder = ""><label>9 - Sacred Beast</label><br>
+			<input id="monstrousFormEntry" type="checkbox" placeholder = ""><label>10 - Monstrous Form</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#chaosBoonFields" data-toggle="collapse">Chaos</a></h3></div>
+		<div id="chaosBoonFields" class="collapse">
+			<input id="primalCreationEntry" type="checkbox" placeholder = ""><label>1 - Primal Creation</label><br>
+			<input id="murphysLawEntry" type="checkbox" placeholder = ""><label>1 - Murphy's Law</label><br>
+			<input id="entropyArmorEntry" type="checkbox" placeholder = ""><label>2 - Entropy Armor</label><br>
+			<input id="discordantEntry" type="checkbox" placeholder = ""><label>2 - Discordant</label><br>
+			<input id="entropicBreakdownEntry" type="checkbox" placeholder = ""><label>3 - Entropic Breakdown</label><br>
+			<input id="babelEntry" type="checkbox" placeholder = ""><label>3 - Babel</label><br>
+			<input id="nonSequiturEntry" type="checkbox" placeholder = ""><label>4 - Non Sequitur</label><br>
+			<input id="confusionEntry" type="checkbox" placeholder = ""><label>4 - Confusion</label><br>
+			<input id="anarchicInfluenceEntry" type="checkbox" placeholder = ""><label>5 - Anarchic Influence</label><br>
+			<input id="fitOfMadnessEntry" type="checkbox" placeholder = ""><label>5 - Fit of Madness</label><br>
+			<input id="outOfTheFryingPanEntry" type="checkbox" placeholder = ""><label>6 - Out of the Frying Pan</label><br>
+			<input id="bacchanaliaEntry" type="checkbox" placeholder = ""><label>6 - Bacchanalia</label><br>
+			<input id="abyssalDestructionEntry" type="checkbox" placeholder = ""><label>7 - Abyssal Destruction</label><br>
+			<input id="chaosTheoryEntry" type="checkbox" placeholder = ""><label>7 - Chaos Theory</label><br>
+			<input id="chaosStormEntry" type="checkbox" placeholder = ""><label>8 - Chaos Storm</label><br>
+			<input id="insanityEntry" type="checkbox" placeholder = ""><label>9 - Insanity</label><br>
+			<input id="twistingNetherEntry" type="checkbox" placeholder = ""><label>10 - Twisting Nether</label><br>
+			<input id="systemFailureEntry" type="checkbox" placeholder = ""><label>10 - System Failure</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#creationBoonFields" data-toggle="collapse">Creation</a></h3></div>
+		<div id="creationBoonFields" class="collapse">
+			<input id="blessingOfInspirationEntry" type="checkbox" placeholder = ""><label>1 - Blessing of Inspiration</label><br>
+			<input id="workSmarterEntry" type="checkbox" placeholder = ""><label>1 - Work Smarter</label><br>
+			<input id="rivalReadingEntry" type="checkbox" placeholder = ""><label>2 - Rival Reading</label><br>
+			<input id="fundamentalsEntry" type="checkbox" placeholder = ""><label>2 - Fundamentals</label><br>
+			<input id="writersBlockEntry" type="checkbox" placeholder = ""><label>3 - Writer's Block</label><br>
+			<input id="masterworkQualityEntry" type="checkbox" placeholder = ""><label>3 - Masterwork Quality</label><br>
+			<input id="lullabyeEntry" type="checkbox" placeholder = ""><label>4 - Lullabye</label><br>
+			<input id="improvisedMaterialsEntry" type="checkbox" placeholder = ""><label>4 - Improvised Materials</label><br>
+			<input id="speedbuildEntry" type="checkbox" placeholder = ""><label>5 - Speedbuild</label><br>
+			<input id="sublimeSuspensionEntry" type="checkbox" placeholder = ""><label>5 - Sublime Suspension</label><br>
+			<input id="creationMemoryEntry" type="checkbox" placeholder = ""><label>6 - Creation Memory</label><br>
+			<input id="toolOfFateEntry" type="checkbox" placeholder = ""><label>6 - Tool of Fate</label><br>
+			<input id="reclamationEntry" type="checkbox" placeholder = ""><label>7 - Reclamation</label><br>
+			<input id="mysticalMasterworkEntry" type="checkbox" placeholder = ""><label>7 - Mystical Masterwork</label><br>
+			<input id="markOfTheMuseEntry" type="checkbox" placeholder = ""><label>8 - Mark of the Muse</label><br>
+			<input id="breathOfLifeEntry" type="checkbox" placeholder = ""><label>8 - Breath of Life</label><br>
+			<input id="churnTheAbyssEntry" type="checkbox" placeholder = ""><label>9 - Churn the Abyss</label><br>
+			<input id="uncreationEntry" type="checkbox" placeholder = ""><label>9 - Uncreation</label><br>
+			<input id="musicOfTheSpheresEntry" type="checkbox" placeholder = ""><label>10 - Music of the Spheres</label><br>
+			<input id="exNihiloEntry" type="checkbox" placeholder = ""><label>10 - Ex Nihilo</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#darknessBoonFields" data-toggle="collapse">Darkness</a></h3></div>
+		<div id="darknessBoonFields" class="collapse">
+			<input id="darkvisionEntry" type="checkbox" placeholder = ""><label>1 - Darkvision</label><br>
+			<input id="snuffEntry" type="checkbox" placeholder = ""><label>1 - Snuff</label><br>
+			<input id="shroudOfSecrecyEntry" type="checkbox" placeholder = ""><label>2 - Shroud of Secrecy</label><br>
+			<input id="blackHeartEntry" type="checkbox" placeholder = ""><label>2 - Black Heart</label><br>
+			<input id="coverOfDarknessEntry" type="checkbox" placeholder = ""><label>3 - Cover of Darkness</label><br>
+			<input id="blackoutEntry" type="checkbox" placeholder = ""><label>3 - Blackout</label><br>
+			<input id="fearOfTheDarkEntry" type="checkbox" placeholder = ""><label>4 - Fear of the Dark</label><br>
+			<input id="shadowFriendEntry" type="checkbox" placeholder = ""><label>4 - Shadow Friend</label><br>
+			<input id="shadowShroudEntry" type="checkbox" placeholder = ""><label>5 - Shadow Shroud</label><br>
+			<input id="creatureOfTheNightEntry" type="checkbox" placeholder = ""><label>5 - Creature of the Night</label><br>
+			<input id="cloakOfMidnightEntry" type="checkbox" placeholder = ""><label>6 - Cloak of Midnight</label><br>
+			<input id="shadowKillerEntry" type="checkbox" placeholder = ""><label>6 - Shadow Killer</label><br>
+			<input id="nightTerrorsEntry" type="checkbox" placeholder = ""><label>7 - Night Terrors</label><br>
+			<input id="witchingHourSilentNightEntry" type="checkbox" placeholder = ""><label>8 - Witching Hour/Silent Night</label><br>
+			<input id="midnightPactEntry" type="checkbox" placeholder = ""><label>8 - Midnight Pact</label><br>
+			<input id="heartOfDarknessEntry" type="checkbox" placeholder = ""><label>9 - Heart of Darkness</label><br>
+			<input id="eclipseEntry" type="checkbox" placeholder = ""><label>10 - Eclipse</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#deathBoonFields" data-toggle="collapse">Death</a></h3></div>
+		<div id="deathBoonFields" class="collapse">
+			<input id="deathSensesEntry" type="checkbox" placeholder = ""><label>1 - Death Senses</label><br>
+			<input id="dontFearTheReaperEntry" type="checkbox" placeholder = ""><label>1 - Don't Fear the Reaper</label><br>
+			<input id="euthanasiaEntry" type="checkbox" placeholder = ""><label>2 - Euthanasia</label><br>
+			<input id="bleakCensusEntry" type="checkbox" placeholder = ""><label>2 - Bleak Census</label><br>
+			<input id="ancestralOfferingsEntry" type="checkbox" placeholder = ""><label>3 - Ancestral Offerings</label><br>
+			<input id="quietCorpseUnquietCorpseEntry" type="checkbox" placeholder = ""><label>3 - Quiet Corpse/Unquiet Corpse</label><br>
+			<input id="thanatosisEntry" type="checkbox" placeholder = ""><label>4 - Thanatosis</label><br>
+			<input id="seanceExorcismEntry" type="checkbox" placeholder = ""><label>4 - Seance/Exorcism</label><br>
+			<input id="fatalBlowEntry" type="checkbox" placeholder = ""><label>5 - Fatal Blow</label><br>
+			<input id="boundSpiritEntry" type="checkbox" placeholder = ""><label>5 - Bound Spirit</label><br>
+			<input id="ghostlyTouchEntry" type="checkbox" placeholder = ""><label>6 - Ghostly Touch</label><br>
+			<input id="legionOfTheDamnedEntry" type="checkbox" placeholder = ""><label>7 - Legion of the Damned</label><br>
+			<input id="canonizeEntry" type="checkbox" placeholder = ""><label>8 - Canonize</label><br>
+			<input id="underworldPortalEntry" type="checkbox" placeholder = ""><label>9 - Underworld Portal</label><br>
+			<input id="deathlyRealmEntry" type="checkbox" placeholder = ""><label>10 - Deathly Realm</label><br>
+			<input id="strikeDeadDefyDeathEntry" type="checkbox" placeholder = ""><label>10 - Strike Dead/Defy Death</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#earthBoonFields" data-toggle="collapse">Earth</a></h3></div>
+		<div id="earthBoonFields" class="collapse">
+			<input id="shapingEntry" type="checkbox" placeholder = ""><label>1 - Shaping</label><br>
+			<input id="rootsOfTheMountainEntry" type="checkbox" placeholder = ""><label>1 - Roots of the Mountain</label><br>
+			<input id="moveEarthEntry" type="checkbox" placeholder = ""><label>2 - Move Earth</label><br>
+			<input id="earthArmorEntry" type="checkbox" placeholder = ""><label>2 - Earth Armor</label><br>
+			<input id="nurturingPresenceEntry" type="checkbox" placeholder = ""><label>3 - Nurturing Presence</label><br>
+			<input id="microseismEntry" type="checkbox" placeholder = ""><label>3 - Microseism</label><br>
+			<input id="earthTravelEntry" type="checkbox" placeholder = ""><label>4 - Earth Travel</label><br>
+			<input id="elementalEntry" type="checkbox" placeholder = ""><label>4 - Elemental</label><br>
+			<input id="bountyOfTheEarthEntry" type="checkbox" placeholder = ""><label>5 - Bounty of the Earth</label><br>
+			<input id="dustCloudEntry" type="checkbox" placeholder = ""><label>5 - Dust Cloud</label><br>
+			<input id="graspingEarthEntry" type="checkbox" placeholder = ""><label>6 - Grasping Earth</label><br>
+			<input id="pillarOfStrengthEntry" type="checkbox" placeholder = ""><label>6 - Pillar of Strength</label><br>
+			<input id="giverOfLifeEntry" type="checkbox" placeholder = ""><label>7 - Giver of Life</label><br>
+			<input id="petrifyEntry" type="checkbox" placeholder = ""><label>7 - Petrify</label><br>
+			<input id="fertileSoilSaltedEarthEntry" type="checkbox" placeholder = ""><label>8 - Fertile Soil/Salted Earth</label><br>
+			<input id="sandstormEntry" type="checkbox" placeholder = ""><label>8 - Sandstorm</label><br>
+			<input id="earthsEmbraceEntry" type="checkbox" placeholder = ""><label>9 - Earth's Embrace</label><br>
+			<input id="mawOfDeathEntry" type="checkbox" placeholder = ""><label>9 - Maw of Death</label><br>
+			<input id="theBigOneEntry" type="checkbox" placeholder = ""><label>10 - The Big One</label><br>
+			<input id="sovereignLandEntry" type="checkbox" placeholder = ""><label>10 - Sovereign Land</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#fertilityBoonFields" data-toggle="collapse">Fertility</a></h3></div>
+		<div id="fertilityBoonFields" class="collapse">
+			<input id="sacredLeavesEntry" type="checkbox" placeholder = ""><label>1 - Sacred Leaves</label><br>
+			<input id="tracklessStepsEntry" type="checkbox" placeholder = ""><label>1 - Trackless Steps</label><br>
+			<input id="feastFamineEntry" type="checkbox" placeholder = ""><label>2 - Feast/Famine</label><br>
+			<input id="dryadicLinkEntry" type="checkbox" placeholder = ""><label>2 - Dryadic Link</label><br>
+			<input id="deadlyPoisonEntry" type="checkbox" placeholder = ""><label>3 - Deadly Poison</label><br>
+			<input id="enchantedHarvestEntry" type="checkbox" placeholder = ""><label>3 - Enchanted Harvest</label><br>
+			<input id="blessedBountyCursedBlightEntry" type="checkbox" placeholder = ""><label>4 - Blessed Bounty/Cursed Blight</label><br>
+			<input id="unearthlyGardenEntry" type="checkbox" placeholder = ""><label>4 - Unearthly Garden</label><br>
+			<input id="naturalSpeechEntry" type="checkbox" placeholder = ""><label>5 - Natural Speech</label><br>
+			<input id="greenEyeEntry" type="checkbox" placeholder = ""><label>5 - Green Eye</label><br>
+			<input id="cloakOfSeasonsEntry" type="checkbox" placeholder = ""><label>6 - Cloak of Seasons</label><br>
+			<input id="terraVitaEntry" type="checkbox" placeholder = ""><label>7 - Terra Vita</label><br>
+			<input id="naturalTransformationEntry" type="checkbox" placeholder = ""><label>7 - Natural Transformation</label><br>
+			<input id="verdantCreationEntry" type="checkbox" placeholder = ""><label>8 - Verdant Creation</label><br>
+			<input id="mythicCultivationEntry" type="checkbox" placeholder = ""><label>9 - Mythic Cultivation</label><br>
+			<input id="unnaturalSeasonEntry" type="checkbox" placeholder = ""><label>10 - Unnatural Season</label><br>
+			<input id="circleOfLifeEntry" type="checkbox" placeholder = ""><label>10 - Circle of Life</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#fireBoonFields" data-toggle="collapse">Fire</a></h3></div>
+		<div id="fireBoonFields" class="collapse">
+			<input id="createFireEntry" type="checkbox" placeholder = ""><label>1 - Create Fire</label><br>
+			<input id="fireAffinityEntry" type="checkbox" placeholder = ""><label>1 - Fire Affinity</label><br>
+			<input id="firewalkingEntry" type="checkbox" placeholder = ""><label>2 - Fire Walking</label><br>
+			<input id="blazingWeaponEntry" type="checkbox" placeholder = ""><label>2 - Blazing Weapon</label><br>
+			<input id="sacredForgeEntry" type="checkbox" placeholder = ""><label>3 - Sacred Forge</label><br>
+			<input id="volcanicTemperEntry" type="checkbox" placeholder = ""><label>3 - Volcanic Temper</label><br>
+			<input id="risingFlamesEntry" type="checkbox" placeholder = ""><label>4 - Rising Flames</label><br>
+			<input id="salamanderEntry" type="checkbox" placeholder = ""><label>4 - Salamander</label><br>
+			<input id="watchfulFlameEntry" type="checkbox" placeholder = ""><label>5 - Watchful Flame</label><br>
+			<input id="fireEaterEntry" type="checkbox" placeholder = ""><label>5 - Fire Eater</label><br>
+			<input id="haloOfFireEntry" type="checkbox" placeholder = ""><label>6 - Halo of Fire</label><br>
+			<input id="purifyingFlameEntry" type="checkbox" placeholder = ""><label>6 - Purifying Flame</label><br>
+			<input id="sacredHearthEntry" type="checkbox" placeholder = ""><label>7 - Sacred Hearth</label><br>
+			<input id="sacrificialFlameEntry" type="checkbox" placeholder = ""><label>7 - Sacrificial Flame</label><br>
+			<input id="giftOfFireEntry" type="checkbox" placeholder = ""><label>8 - Gift of Fire</label><br>
+			<input id="firestormEntry" type="checkbox" placeholder = ""><label>8 - Firestorm</label><br>
+			<input id="eternalFlameEntry" type="checkbox" placeholder = ""><label>9 - Eternal Flame</label><br>
+			<input id="incinerateEntry" type="checkbox" placeholder = ""><label>9 - Incinerate</label><br>
+			<input id="fromTheAshesEntry" type="checkbox" placeholder = ""><label>10 - From the Ashes</label><br>
+			<input id="eruptionEntry" type="checkbox" placeholder = ""><label>10 - Eruption</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#frostBoonFields" data-toggle="collapse">Frost</a></h3></div>
+		<div id="frostBoonFields" class="collapse">
+			<input id="freezingTouchEntry" type="checkbox" placeholder = ""><label>1 - Freezing Touch</label><br>
+			<input id="frostAffinityEntry" type="checkbox" placeholder = ""><label>1 - Frost Affinity</label><br>
+			<input id="frozenBladeEntry" type="checkbox" placeholder = ""><label>2 - Frozen Blade</label><br>
+			<input id="frozenHeartEntry" type="checkbox" placeholder = ""><label>2 - Frozen Heart</label><br>
+			<input id="absoluteZeroEntry" type="checkbox" placeholder = ""><label>3 - Absolute Zero</label><br>
+			<input id="frostbiteEntry" type="checkbox" placeholder = ""><label>3 - Frostbite</label><br>
+			<input id="wintersGraceEntry" type="checkbox" placeholder = ""><label>4 - Winter's Grace</label><br>
+			<input id="chillTheBloodEntry" type="checkbox" placeholder = ""><label>4 - Chill the Blood</label><br>
+			<input id="frozenSoulEntry" type="checkbox" placeholder = ""><label>5 - Frozen Soul</label><br>
+			<input id="whiteoutEntry" type="checkbox" placeholder = ""><label>5 - Whiteout</label><br>
+			<input id="rimingEntry" type="checkbox" placeholder = ""><label>6 - Riming</label><br>
+			<input id="wintersBreathEntry" type="checkbox" placeholder = ""><label>6 - Winter's Breath</label><br>
+			<input id="deepFreezeEntry" type="checkbox" placeholder = ""><label>7 - Deep Freeze</label><br>
+			<input id="chillTheHeartEntry" type="checkbox" placeholder = ""><label>7 - Chill the Heart</label><br>
+			<input id="longWinterEntry" type="checkbox" placeholder = ""><label>8 - Long Winter</label><br>
+			<input id="iceStormEntry" type="checkbox" placeholder = ""><label>8 - Ice Storm</label><br>
+			<input id="flashFreezeEntry" type="checkbox" placeholder = ""><label>9 - Flash Freeze</label><br>
+			<input id="blizzardEntry" type="checkbox" placeholder = ""><label>10 - Blizzard</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#guardianBoonFields" data-toggle="collapse">Guardian</a></h3></div>
+		<div id="guardianBoonFields" class="collapse">
+			<input id="vigilBrandEntry" type="checkbox" placeholder = ""><label>1 - Vigil Brand</label><br>
+			<input id="humanShieldEntry" type="checkbox" placeholder = ""><label>1 - Human Shield</label><br>
+			<input id="forebodingEntry" type="checkbox" placeholder = ""><label>2 - foreboding</label><br>
+			<input id="aegisEntry" type="checkbox" placeholder = ""><label>2 - Aegis</label><br>
+			<input id="ISayTheeNayEntry" type="checkbox" placeholder = ""><label>3 - I Say Thee Nay</label><br>
+			<input id="wardEntry" type="checkbox" placeholder = ""><label>3 - Ward</label><br>
+			<input id="guardianSpiritEntry" type="checkbox" placeholder = ""><label>4 - Guardian Spirit</label><br>
+			<input id="divineResolveEntry" type="checkbox" placeholder = ""><label>4 - Divine Resolve</label><br>
+			<input id="heavenlyPatronEntry" type="checkbox" placeholder = ""><label>5 - Heavenly Patron</label><br>
+			<input id="wardingLineEntry" type="checkbox" placeholder = ""><label>5 - Warding Line</label><br>
+			<input id="spiritWardEntry" type="checkbox" placeholder = ""><label>6 - Spirit Ward</label><br>
+			<input id="comeRunningEntry" type="checkbox" placeholder = ""><label>6 - Come Running</label><br>
+			<input id="conferProtectionEntry" type="checkbox" placeholder = ""><label>7 - Confer Protection</label><br>
+			<input id="honorGuardEntry" type="checkbox" placeholder = ""><label>8 - Honor Guard</label><br>
+			<input id="elementalShieldEntry" type="checkbox" placeholder = ""><label>8 - Elemental Shield</label><br>
+			<input id="entreatImmunityEntry" type="checkbox" placeholder = ""><label>9 - Entreat Immunity</label><br>
+			<input id="salvationSacrificeEntry" type="checkbox" placeholder = ""><label>10 - Salvation Sacrifice</label><br>
+			<input id="safeHavenEntry" type="checkbox" placeholder = ""><label>10 - Safe Haven</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#healthBoonFields" data-toggle="collapse">Health</a></h3></div>
+		<div id="healthBoonFields" class="collapse">
+			<input id="assessHealthEntry" type="checkbox" placeholder = ""><label>1 - Assess Health</label><br>
+			<input id="knitWoundsOpenWoundsEntry" type="checkbox" placeholder = ""><label>1 - Knit Wounds/Open Wounds</label><br>
+			<input id="fertilityRiteCurseOfImpotenceEntry" type="checkbox" placeholder = ""><label>2 - Fertility Rite/Curse of Impotence</label><br>
+			<input id="resilienceMalaiseEntry" type="checkbox" placeholder = ""><label>2 - Resilience/Malaise</label><br>
+			<input id="detoxifyIntoxicateEntry" type="checkbox" placeholder = ""><label>3 - Detoxify/Intoxicate</label><br>
+			<input id="recoverSmiteEntry" type="checkbox" placeholder = ""><label>3 - Recover/Smite</label><br>
+			<input id="medicinalAidEnvenomEntry" type="checkbox" placeholder = ""><label>4 - Medicinal Aid/Envenom</label><br>
+			<input id="healInfectEntry" type="checkbox" placeholder = ""><label>4 - Heal/Infect</label><br>
+			<input id="bolsterDiminishEntry" type="checkbox" placeholder = ""><label>5 - Bolster/Diminish</label><br>
+			<input id="curePlagueEntry" type="checkbox" placeholder = ""><label>5 - Cure/Plague</label><br>
+			<input id="glowOfHealthCurseOfSterilityEntry" type="checkbox" placeholder = ""><label>6 - Glow of Health/Curse of Sterility</label><br>
+			<input id="restoreWitherEntry" type="checkbox" placeholder = ""><label>7 - Restore/Wither</label><br>
+			<input id="humanClayEntry" type="checkbox" placeholder = ""><label>8 - Human Clay</label><br>
+			<input id="panaceaEpidemicEntry" type="checkbox" placeholder = ""><label>8 - Panacea/Epidemic</label><br>
+			<input id="holyFontProfaneWellEntry" type="checkbox" placeholder = ""><label>9 - Holy Font/Profane Well</label><br>
+			<input id="resurrectSlayLivingEntry" type="checkbox" placeholder = ""><label>10 - Resurrect/Slay Living</label><br>
+			<input id="genesisEntry" type="checkbox" placeholder = ""><label>10 - Genesis</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#illusionBoonFields" data-toggle="collapse">Illusion</a></h3></div>
+		<div id="illusionBoonFields" class="collapse">
+			<input id="theSubtleKnifeEntry" type="checkbox" placeholder = ""><label>1 - The Subtle Knife</label><br>
+			<input id="falseFootstepsEntry" type="checkbox" placeholder = ""><label>1 - False Footsteps</label><br>
+			<input id="glamerEntry" type="checkbox" placeholder = ""><label>2 - Glamer</label><br>
+			<input id="foolsGoldEntry" type="checkbox" placeholder = ""><label>2 - Fool's Gold</label><br>
+			<input id="shadowPartnerEntry" type="checkbox" placeholder = ""><label>3 - Shadow Partner</label><br>
+			<input id="theBetterPartOfValorEntry" type="checkbox" placeholder = ""><label>3 - The Better Part of Valor</label><br>
+			<input id="theBiggerTheyAreEntry" type="checkbox" placeholder = ""><label>4 - The Bigger They Are</label><br>
+			<input id="phantasmagoriaEntry" type="checkbox" placeholder = ""><label>4 - Phantasmagoria</label><br>
+			<input id="justifyingTheMeansEntry" type="checkbox" placeholder = ""><label>5 - Justifying the Means</label><br>
+			<input id="loanedIdentityEntry" type="checkbox" placeholder = ""><label>5 - Loaned Identity</label><br>
+			<input id="fantasticVistaEntry" type="checkbox" placeholder = ""><label>6 - Fantastic Vista</label><br>
+			<input id="simulacrumEntry" type="checkbox" placeholder = ""><label>6 - Simulacrum</label><br>
+			<input id="forgeryEntry" type="checkbox" placeholder = ""><label>7 - Forgery</label><br>
+			<input id="princeOfLiesEntry" type="checkbox" placeholder = ""><label>7 - Prince of Lies</label><br>
+			<input id="shapechangeEntry" type="checkbox" placeholder = ""><label>8 - Shapechange</label><br>
+			<input id="shenanigansEntry" type="checkbox" placeholder = ""><label>8 - Shenanigans</label><br>
+			<input id="scapegoatEntry" type="checkbox" placeholder = ""><label>9 - Scapegoat</label><br>
+			<input id="falseVisionEntry" type="checkbox" placeholder = ""><label>9 - False Vision</label><br>
+			<input id="dreamworldEntry" type="checkbox" placeholder = ""><label>10 - Dreamworld</label><br>
+			<input id="theBestTrickEntry" type="checkbox" placeholder = ""><label>10 - The Best Trick</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#justiceBoonFields" data-toggle="collapse">Justice</a></h3></div>
+		<div id="justiceBoonFields" class="collapse">
+			<input id="blessingOfRighteousnessEntry" type="checkbox" placeholder = ""><label>1 - Blessing of Righteousness</label><br>
+			<input id="lawsOfTheLandEntry" type="checkbox" placeholder = ""><label>1 - Laws of the Land</label><br>
+			<input id="markOfIreEntry" type="checkbox" placeholder = ""><label>2 - Mark of Ire</label><br>
+			<input id="heartfeltPromiseEntry" type="checkbox" placeholder = ""><label>2 - Heartfelt Promise</label><br>
+			<input id="shieldOfRighteousnessEntry" type="checkbox" placeholder = ""><label>3 - Shield of Righteousness</label><br>
+			<input id="guiltyConscienceEntry" type="checkbox" placeholder = ""><label>3 - Guilty Conscience</label><br>
+			<input id="guiltOfTheDamnedEntry" type="checkbox" placeholder = ""><label>4 - Guilt of the Damned</label><br>
+			<input id="codeOfHeavenEntry" type="checkbox" placeholder = ""><label>4 - Code of Heaven</label><br>
+			<input id="lawAndOrderEntry" type="checkbox" placeholder = ""><label>5 - Law and Order</label><br>
+			<input id="scarletLetterEntry" type="checkbox" placeholder = ""><label>5 - Scarlet Letter</label><br>
+			<input id="banishmentEntry" type="checkbox" placeholder = ""><label>6 - Banishment</label><br>
+			<input id="sanctifyOathEntry" type="checkbox" placeholder = ""><label>7 - Sanctify Oath</label><br>
+			<input id="imprisonEntry" type="checkbox" placeholder = ""><label>7 - Imprison</label><br>
+			<input id="sinsOfTheFatherEntry" type="checkbox" placeholder = ""><label>8 - Sins of the Father</label><br>
+			<input id="deputizeEntry" type="checkbox" placeholder = ""><label>8 - Deputize</label><br>
+			<input id="eternalRewardEntry" type="checkbox" placeholder = ""><label>9 - Eternal Reward</label><br>
+			<input id="pardonEntry" type="checkbox" placeholder = ""><label>9 - Pardon</label><br>
+			<input id="ruleOfLawEntry" type="checkbox" placeholder = ""><label>10 - Rule of Law</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#magicBoonFields" data-toggle="collapse">Magic</a></h3></div>
+		<div id="magicBoonFields" class="collapse">
+			<input id="theUnliddedEyeEntry" type="checkbox" placeholder = ""><label>1 - The Unlidded Eye</label><br>
+			<input id="luckBeALadyEntry" type="checkbox" placeholder = ""><label>1 - Luck Be a Lady</label><br>
+			<input id="bendFateEntry" type="checkbox" placeholder = ""><label>1 - Bend Fate</label><br>
+			<input id="badPennyEntry" type="checkbox" placeholder = ""><label>1 - Bad Penny</label><br>
+			<input id="castingLinesEntry" type="checkbox" placeholder = ""><label>2 - Casting Lines</label><br>
+			<input id="warpTheWeftEntry" type="checkbox" placeholder = ""><label>2 - Warp the Weft</label><br>
+			<input id="bonaFortunaEntry" type="checkbox" placeholder = ""><label>2 - Bona Fortuna</label><br>
+			<input id="evilEyeEntry" type="checkbox" placeholder = ""><label>2 - Evil Eye</label><br>
+			<input id="deusExMachinaEntry" type="checkbox" placeholder = ""><label>3 - Deus Ex Machina</label><br>
+			<input id="tradingFatesEntry" type="checkbox" placeholder = ""><label>3 - Trading Fates</label><br>
+			<input id="greatExpectationsEntry" type="checkbox" placeholder = ""><label>3 - Great Expectations</label><br>
+			<input id="pullingStringsEntry" type="checkbox" placeholder = ""><label>4 - Pulling Strings</label><br>
+			<input id="fatefulConnectionEntry" type="checkbox" placeholder = ""><label>4 - Fateful Connection</label><br>
+			<input id="trustedToolEntry" type="checkbox" placeholder = ""><label>4 - Trusted Tool</label><br>
+			<input id="AFickleMistressEntry" type="checkbox" placeholder = ""><label>4 - A Fickle Mistress</label><br>
+			<input id="chosenPathEntry" type="checkbox" placeholder = ""><label>4 - Chosen Path</label><br>
+			<input id="sacredImageEntry" type="checkbox" placeholder = ""><label>5 - Sacred Image</label><br>
+			<input id="birthrightBondEntry" type="checkbox" placeholder = ""><label>5 - Birthright Bond</label><br>
+			<input id="favorTheBoldEntry" type="checkbox" placeholder = ""><label>5 - Favor the Bold</label><br>
+			<input id="meddlesomeFatesEntry" type="checkbox" placeholder = ""><label>6 - Meddlesome Fates</label><br>
+			<input id="avoidAFateEntry" type="checkbox" placeholder = ""><label>6 - Avoid a Fate</label><br>
+			<input id="twistTheWebEntry" type="checkbox" placeholder = ""><label>7 - Twist the Web</label><br>
+			<input id="mightyCurseEntry" type="checkbox" placeholder = ""><label>7 - Mighty Curse</label><br>
+			<input id="weaveSenseEntry" type="checkbox" placeholder = ""><label>8 - Weave-Sense</label><br>
+			<input id="serendipityEntry" type="checkbox" placeholder = ""><label>8 - Serendipity</label><br>
+			<input id="unbindingEntry" type="checkbox" placeholder = ""><label>9 - Unbinding</label><br>
+			<input id="shapeTheSoulEntry" type="checkbox" placeholder = ""><label>9 - Shape the Soul</label><br>
+			<input id="severedThreadsEntry" type="checkbox" placeholder = ""><label>10 - Severed Threads</label><br>
+			<input id="fatefulLocusEntry" type="checkbox" placeholder = ""><label>10 - Fateful Locus</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#moonBoonFields" data-toggle="collapse">Moon</a></h3></div>
+		<div id="moonBoonFields" class="collapse">
+			<input id="moonlightEntry" type="checkbox" placeholder = ""><label>1 - Moonlight</label><br>
+			<input id="nightEyesEntry" type="checkbox" placeholder = ""><label>1 - Night Eyes</label><br>
+			<input id="moonsilverEntry" type="checkbox" placeholder = ""><label>2 - Moonsilver</label><br>
+			<input id="cycleOfMadnessEntry" type="checkbox" placeholder = ""><label>2 - Cycle of Madness</label><br>
+			<input id="lunarPresenceEntry" type="checkbox" placeholder = ""><label>3 - Lunar Presence</label><br>
+			<input id="phaseCloakEntry" type="checkbox" placeholder = ""><label>3 - Phase Cloak</label><br>
+			<input id="waxAndWaneEntry" type="checkbox" placeholder = ""><label>4 - Wax and Wane</label><br>
+			<input id="lunarInterferenceEntry" type="checkbox" placeholder = ""><label>4 - Lunar Interference</label><br>
+			<input id="lunacyEntry" type="checkbox" placeholder = ""><label>5 - Lunacy</label><br>
+			<input id="smokingMirrorEntry" type="checkbox" placeholder = ""><label>5 - Smoking Mirror</label><br>
+			<input id="lunarMantleEntry" type="checkbox" placeholder = ""><label>6 - Lunar Mantle</label><br>
+			<input id="heavenlyMirrorEntry" type="checkbox" placeholder = ""><label>6 - Heavenly Mirror</label><br>
+			<input id="mirrorOfLunacyEntry" type="checkbox" placeholder = ""><label>7 - Mirror of Lunacy</label><br>
+			<input id="moonChariotEntry" type="checkbox" placeholder = ""><label>7 - Moon Chariot</label><br>
+			<input id="serenityRiptideEntry" type="checkbox" placeholder = ""><label>8 - Serenity/Riptide</label><br>
+			<input id="tranquilityEntry" type="checkbox" placeholder = ""><label>9 - Tranquility</label><br>
+			<input id="moonriseEntry" type="checkbox" placeholder = ""><label>10 - Moonrise</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#mysteryBoonFields" data-toggle="collapse">Mystery</a></h3></div>
+		<div id="mysteryBoonFields" class="collapse">
+			<input id="uncannyIntuitionEntry" type="checkbox" placeholder = ""><label>1 - Uncanny Intuition</label><br>
+			<input id="invokedIntuitionEntry" type="checkbox" placeholder = ""><label>1 - Invoked Intuition</label><br>
+			<input id="initiatingRitualEntry" type="checkbox" placeholder = ""><label>1 - Initiating Ritual</label><br>
+			<input id="unnaturalInsightEntry" type="checkbox" placeholder = ""><label>2 - Unnatural Insight</label><br>
+			<input id="sustainingRitualEntry" type="checkbox" placeholder = ""><label>2 - Sustaining Ritual</label><br>
+			<input id="symbolicRitualEntry" type="checkbox" placeholder = ""><label>2 - Symbolic Ritual</label><br>
+			<input id="spiritualFortitudeEntry" type="checkbox" placeholder = ""><label>3 - Spiritual Fortitude</label><br>
+			<input id="virtuousRitualEntry" type="checkbox" placeholder = ""><label>3 - Virtuous Ritual</label><br>
+			<input id="lateralPrognosticationEntry" type="checkbox" placeholder = ""><label>4 - Lateral Prognostication</label><br>
+			<input id="invigoratingRitualEntry" type="checkbox" placeholder = ""><label>4 - Invigorating Ritual</label><br>
+			<input id="destinysCallEntry" type="checkbox" placeholder = ""><label>4 - Destiny's Call</label><br>
+			<input id="direSacrificeEntry" type="checkbox" placeholder = ""><label>5 - Dire Sacrifice</label><br>
+			<input id="auspiciousRitualEntry" type="checkbox" placeholder = ""><label>5 - Auspicious Ritual</label><br>
+			<input id="communingRitualEntry" type="checkbox" placeholder = ""><label>6 - Communing Ritual</label><br>
+			<input id="drawingConclusionsEntry" type="checkbox" placeholder = ""><label>7 - Drawing Conclusions</label><br>
+			<input id="fatefulRitualEntry" type="checkbox" placeholder = ""><label>8 - Fateful Ritual</label><br>
+			<input id="mysteriumEntry" type="checkbox" placeholder = ""><label>8 - Mysterium</label><br>
+			<input id="spiritualRebirthEntry" type="checkbox" placeholder = ""><label>9 - Spiritual Rebirth</label><br>
+			<input id="mysteriousVisionEntry" type="checkbox" placeholder = ""><label>10 - Mysterious Vision</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#prophecyBoonFields" data-toggle="collapse">Prophecy</a></h3></div>
+		<div id="prophecyBoonFields" class="collapse">
+			<input id="invokedVisionsEntry" type="checkbox" placeholder = ""><label>1 - Invoked Visions</label><br>
+			<input id="herosHeraldEntry" type="checkbox" placeholder = ""><label>1 - Hero's Herald</label><br>
+			<input id="dangerSenseEntry" type="checkbox" placeholder = ""><label>2 - Danger Sense</label><br>
+			<input id="futureGlimpsesEntry" type="checkbox" placeholder = ""><label>2 - Future Glimpses</label><br>
+			<input id="omenEntry" type="checkbox" placeholder = ""><label>2 - Omen</label><br>
+			<input id="defensiveForesightEntry" type="checkbox" placeholder = ""><label>3 - Defensive Foresight</label><br>
+			<input id="driversOfDestinyEntry" type="checkbox" placeholder = ""><label>3 - Drivers of Destiny</label><br>
+			<input id="legendaryVisionEntry" type="checkbox" placeholder = ""><label>4 - Legendary Vision</label><br>
+			<input id="heroOfFateEntry" type="checkbox" placeholder = ""><label>4 - Hero of Fate</label><br>
+			<input id="fatesForetoldEntry" type="checkbox" placeholder = ""><label>5 - Fates Foretold</label><br>
+			<input id="seerOfSignsEntry" type="checkbox" placeholder = ""><label>5 - Seer of Signs</label><br>
+			<input id="tragicFlawEntry" type="checkbox" placeholder = ""><label>6 - Tragic Flaw</label><br>
+			<input id="sharedBurdenEntry" type="checkbox" placeholder = ""><label>6 - Shared Burden</label><br>
+			<input id="fateMeditationEntry" type="checkbox" placeholder = ""><label>7 - Fate Meditation</label><br>
+			<input id="prophesiedGreatnessEntry" type="checkbox" placeholder = ""><label>7 - Prophesied Greatness</label><br>
+			<input id="avertDisasterEntry" type="checkbox" placeholder = ""><label>8 - Avert Disaster</label><br>
+			<input id="fatedProwessEntry" type="checkbox" placeholder = ""><label>8 - Fated Prowess</label><br>
+			<input id="sharedDestinyEntry" type="checkbox" placeholder = ""><label>9 - Shared Destiny</label><br>
+			<input id="vesselOfFateEntry" type="checkbox" placeholder = ""><label>10 - Vessel of Fate</label><br>
+			<input id="propheticVisionEntry" type="checkbox" placeholder = ""><label>10 - Prophetic Vision</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#psychopompBoonFields" data-toggle="collapse">Psychopomp</a></h3></div>
+		<div id="psychopompBoonFields" class="collapse">
+			<input id="unerringOrientationEntry" type="checkbox" placeholder = ""><label>1 - Unerring Orientation</label><br>
+			<input id="whiteStagEntry" type="checkbox" placeholder = ""><label>1 - White Stag</label><br>
+			<input id="hiddenDoorEntry" type="checkbox" placeholder = ""><label>2 - Hidden Door</label><br>
+			<input id="liminalBeingEntry" type="checkbox" placeholder = ""><label>2 - Liminal Being</label><br>
+			<input id="heartOfTheMazeEntry" type="checkbox" placeholder = ""><label>3 - Heart of the Maze</label><br>
+			<input id="unbarredEntryEntry" type="checkbox" placeholder = ""><label>3 - Unbarred Entry</label><br>
+			<input id="spiritLampEntry" type="checkbox" placeholder = ""><label>4 - Spirit Lamp</label><br>
+			<input id="openerOfDoorsEntry" type="checkbox" placeholder = ""><label>4 - Opener of Doors</label><br>
+			<input id="onericVisitEntry" type="checkbox" placeholder = ""><label>5 - Oneric Visit</label><br>
+			<input id="spiritOfTheCrossroadsEntry" type="checkbox" placeholder = ""><label>6 - Spirit of the Crossroads</label><br>
+			<input id="stairwayToHeavenEntry" type="checkbox" placeholder = ""><label>7 - Stairway to Heaven</label><br>
+			<input id="spiritGuideEntry" type="checkbox" placeholder = ""><label>8 - Spirit Guide</label><br>
+			<input id="secretPathEntry" type="checkbox" placeholder = ""><label>8 - Secret Path</label><br>
+			<input id="divineIntermediaryEntry" type="checkbox" placeholder = ""><label>9 - Divine Intermediary</label><br>
+			<input id="otherworldlyPortalEntry" type="checkbox" placeholder = ""><label>9 - Otherworldly Portal</label><br>
+			<input id="sealedStairEntry" type="checkbox" placeholder = ""><label>10 - Sealed Stair</label><br>
+			<input id="colocationEntry" type="checkbox" placeholder = ""><label>10 - Co-Location</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#skyBoonFields" data-toggle="collapse">Sky</a></h3></div>
+		<div id="skyBoonFields" class="collapse">
+			<input id="skysGraceEntry" type="checkbox" placeholder = ""><label>1 - Sky's Grace</label><br>
+			<input id="voiceOnTheWindEntry" type="checkbox" placeholder = ""><label>1 - Voice on the Wind</label><br>
+			<input id="airArmorEntry" type="checkbox" placeholder = ""><label>2 - Air Armor</label><br>
+			<input id="windWarpEntry" type="checkbox" placeholder = ""><label>2 - Wind Warp</label><br>
+			<input id="breathEntry" type="checkbox" placeholder = ""><label>3 - Breath</label><br>
+			<input id="prismaticPresenceEntry" type="checkbox" placeholder = ""><label>3 - Prismatic Presence</label><br>
+			<input id="flightEntry" type="checkbox" placeholder = ""><label>4 - Flight</label><br>
+			<input id="zephyrEntry" type="checkbox" placeholder = ""><label>4 - Zephyr</label><br>
+			<input id="arrowStormEntry" type="checkbox" placeholder = ""><label>5 - Arrow Storm</label><br>
+			<input id="obscuringMistEntry" type="checkbox" placeholder = ""><label>5 - Obscuring Mist</label><br>
+			<input id="heavenlyDomainEntry" type="checkbox" placeholder = ""><label>6 - Heavenly Domain</label><br>
+			<input id="rainbowMantleEntry" type="checkbox" placeholder = ""><label>6 - Rainbow Mantle</label><br>
+			<input id="cloudTravelEntry" type="checkbox" placeholder = ""><label>7 - Cloud Travel</label><br>
+			<input id="galeForceEntry" type="checkbox" placeholder = ""><label>7 - Gale Force</label><br>
+			<input id="clearSkiesOvercastEntry" type="checkbox" placeholder = ""><label>8 - Clear Skies/Overcast</label><br>
+			<input id="whirlwindEntry" type="checkbox" placeholder = ""><label>8 - Whirlwind</label><br>
+			<input id="rainbowBridgeEntry" type="checkbox" placeholder = ""><label>9 - Rainbow Bridge</label><br>
+			<input id="suffocationEntry" type="checkbox" placeholder = ""><label>9 - Suffocation</label><br>
+			<input id="tempestBlastEntry" type="checkbox" placeholder = ""><label>10 - Tempest Blast</label><br>
+			<input id="vaultOfHeavenEntry" type="checkbox" placeholder = ""><label>10 - Vault of Heaven</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#starBoonFields" data-toggle="collapse">Star</a></h3></div>
+		<div id="starBoonFields" class="collapse">
+			<input id="starlightEntry" type="checkbox" placeholder = ""><label>1 - Starlight</label><br>
+			<input id="poleStarEntry" type="checkbox" placeholder = ""><label>1 - Pole Star</label><br>
+			<input id="luckyStarEntry" type="checkbox" placeholder = ""><label>2 - Lucky Star</label><br>
+			<input id="skyIronEntry" type="checkbox" placeholder = ""><label>2 - Sky Iron</label><br>
+			<input id="celestialPresenceEntry" type="checkbox" placeholder = ""><label>3 - Celestial Presence</label><br>
+			<input id="heavenlyToolsEntry" type="checkbox" placeholder = ""><label>3 - Heavenly Tools</label><br>
+			<input id="portentOfDreadEntry" type="checkbox" placeholder = ""><label>4 - Portent of Dread</label><br>
+			<input id="redStarEntry" type="checkbox" placeholder = ""><label>4 - Red Star</label><br>
+			<input id="celestialBeaconEntry" type="checkbox" placeholder = ""><label>5 - Celestial Beacon</label><br>
+			<input id="eyeInTheHeavensEntry" type="checkbox" placeholder = ""><label>5 - Eye in the Heavens</label><br>
+			<input id="axisOfTheHeavensEntry" type="checkbox" placeholder = ""><label>6 - Axis of the Heavens</label><br>
+			<input id="celestialMantleEntry" type="checkbox" placeholder = ""><label>6 - Celestial Mantle</label><br>
+			<input id="portentOfDoomEntry" type="checkbox" placeholder = ""><label>7 - Portent of Doom</label><br>
+			<input id="starBeastEntry" type="checkbox" placeholder = ""><label>7 - Star Beast</label><br>
+			<input id="celestialNavigationEntry" type="checkbox" placeholder = ""><label>8 - Celestial Navigation</label><br>
+			<input id="meteorStormEntry" type="checkbox" placeholder = ""><label>9 - Meteor Storm</label><br>
+			<input id="milkyRoadEntry" type="checkbox" placeholder = ""><label>9 - Milky Road</label><br>
+			<input id="constellationWeaverEntry" type="checkbox" placeholder = ""><label>10 - Constellation Weaver</label><br>
+			<input id="celestialAlignmentEntry" type="checkbox" placeholder = ""><label>10 - Celestial Alignment</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#sunBoonFields" data-toggle="collapse">Sun</a></h3></div>
+		<div id="sunBoonFields" class="collapse">
+			<input id="sunlightEntry" type="checkbox" placeholder = ""><label>1 - Sunlight</label><br>
+			<input id="unflinchingGazeEntry" type="checkbox" placeholder = ""><label>1 - Unflinching Gaze</label><br>
+			<input id="shiningShieldEntry" type="checkbox" placeholder = ""><label>2 - Shining Shield</label><br>
+			<input id="rejuvenationEntry" type="checkbox" placeholder = ""><label>2 - Rejuvenation</label><br>
+			<input id="heavenlyFlareEntry" type="checkbox" placeholder = ""><label>3 - Heavenly Flare</label><br>
+			<input id="solarPresenceEntry" type="checkbox" placeholder = ""><label>3 - Solar Presence</label><br>
+			<input id="heatstrokeEntry" type="checkbox" placeholder = ""><label>4 - Heatstroke</label><br>
+			<input id="burningRayEntry" type="checkbox" placeholder = ""><label>4 - Burning Ray</label><br>
+			<input id="allSeeingEyeEntry" type="checkbox" placeholder = ""><label>5 - All-Seeing Eye</label><br>
+			<input id="droughtOfTheSoulEntry" type="checkbox" placeholder = ""><label>5 - Drought of the Soul</label><br>
+			<input id="heavenlyTorchEntry" type="checkbox" placeholder = ""><label>6 - Heavenly Torch</label><br>
+			<input id="solarMantleEntry" type="checkbox" placeholder = ""><label>6 - Solar Mantle</label><br>
+			<input id="lifeGivingRaysEntry" type="checkbox" placeholder = ""><label>7 - Life-Giving Rays</label><br>
+			<input id="sunChariotEntry" type="checkbox" placeholder = ""><label>7 - Sun Chariot</label><br>
+			<input id="blessedRaysSearingRaysEntry" type="checkbox" placeholder = ""><label>8 - Blessed rays/Searing Rays</label><br>
+			<input id="burnEntry" type="checkbox" placeholder = ""><label>9 - Burn</label><br>
+			<input id="daybreakEntry" type="checkbox" placeholder = ""><label>10 - Daybreak</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#thunderBoonFields" data-toggle="collapse">Thunder</a></h3></div>
+		<div id="thunderBoonFields" class="collapse">
+			<input id="divineChargeEntry" type="checkbox" placeholder = ""><label>1 - Divine Charge</label><br>
+			<input id="lightningAffinityEntry" type="checkbox" placeholder = ""><label>1 - Lightning Affinity</label><br>
+			<input id="rainDanceEntry" type="checkbox" placeholder = ""><label>2 - Rain Dance</label><br>
+			<input id="stormAugmentationEntry" type="checkbox" placeholder = ""><label>2 - Storm Augmentation</label><br>
+			<input id="steepleStrikeEntry" type="checkbox" placeholder = ""><label>3 - Steeple Strike</label><br>
+			<input id="thunderingVoiceEntry" type="checkbox" placeholder = ""><label>3 - Thundering Voice</label><br>
+			<input id="gloomEntry" type="checkbox" placeholder = ""><label>4 - Gloom</label><br>
+			<input id="levinFuryEntry" type="checkbox" placeholder = ""><label>4 - Levin Fury</label><br>
+			<input id="lightningEaterEntry" type="checkbox" placeholder = ""><label>5 - Lightning Eater</label><br>
+			<input id="lightningRodEntry" type="checkbox" placeholder = ""><label>5 - Lightning Rod</label><br>
+			<input id="rideTheStormEntry" type="checkbox" placeholder = ""><label>6 - Ride the Storm</label><br>
+			<input id="supercellEntry" type="checkbox" placeholder = ""><label>6 - Supercell</label><br>
+			<input id="rainyDayEntry" type="checkbox" placeholder = ""><label>7 - Rainy Day</label><br>
+			<input id="thunderclapEntry" type="checkbox" placeholder = ""><label>7 - Thunderclap</label><br>
+			<input id="ballLightningEntry" type="checkbox" placeholder = ""><label>8 - Ball Lightning</label><br>
+			<input id="blessingOfHeavenEntry" type="checkbox" placeholder = ""><label>8 - Blessing of Heaven</label><br>
+			<input id="furyOfHeavenEntry" type="checkbox" placeholder = ""><label>9 - Fury of Heaven</label><br>
+			<input id="thunderstoneEntry" type="checkbox" placeholder = ""><label>9 - Thunderstone</label><br>
+			<input id="maelstromEntry" type="checkbox" placeholder = ""><label>10 - Maelstrom</label><br>
+			<input id="unnaturalRainEntry" type="checkbox" placeholder = ""><label>10 - Unnatural Rain</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#warBoonFields" data-toggle="collapse">War</a></h3></div>
+		<div id="warBoonFields" class="collapse">
+			<input id="alwaysArmedEntry" type="checkbox" placeholder = ""><label>1 - Always Armed</label><br>
+			<input id="blessingOfBraveryEntry" type="checkbox" placeholder = ""><label>1 - Blessing of Bravery</label><br>
+			<input id="criticalStrikeEntry" type="checkbox" placeholder = ""><label>2 - Critical Strike</label><br>
+			<input id="warriorIdealEntry" type="checkbox" placeholder = ""><label>2 - Warrior Ideal</label><br>
+			<input id="tacticalBriefingEntry" type="checkbox" placeholder = ""><label>3 - Tactical Briefing</label><br>
+			<input id="improvisedTacticsEntry" type="checkbox" placeholder = ""><label>3 - Improvised Tactics</label><br>
+			<input id="furyOfWarEntry" type="checkbox" placeholder = ""><label>4 - Fury of War</label><br>
+			<input id="warpSpasmEntry" type="checkbox" placeholder = ""><label>4 - Warp Spasm</label><br>
+			<input id="mortalStrokeEntry" type="checkbox" placeholder = ""><label>5 - Mortal Stroke</label><br>
+			<input id="tacticalAdvantageEntry" type="checkbox" placeholder = ""><label>5 - Tactical Advantage</label><br>
+			<input id="standardBearerEntry" type="checkbox" placeholder = ""><label>6 - Standard Bearer</label><br>
+			<input id="favoredWeaponEntry" type="checkbox" placeholder = ""><label>6 - Favored Weapon</label><br>
+			<input id="moraleFailureEntry" type="checkbox" placeholder = ""><label>7 - Morale Failure</label><br>
+			<input id="armyOfOneEntry" type="checkbox" placeholder = ""><label>8 - Army of One</label><br>
+			<input id="marchingOrdersEntry" type="checkbox" placeholder = ""><label>8 - Marching Orders</label><br>
+			<input id="rallyingCryEntry" type="checkbox" placeholder = ""><label>9 - Rallying Cry</label><br>
+			<input id="surrealDraftEntry" type="checkbox" placeholder = ""><label>10 - Surreal Draft</label><br>
+		</div>
+
+		<div class="updateHeaders"><h3><a href="#waterBoonFields" data-toggle="collapse">Water</a></h3></div>
+		<div id="waterBoonFields" class="collapse">
+			<input id="createWaterEntry" type="checkbox" placeholder = ""><label>1 - Create Water</label><br>
+			<input id="favorOfTheWavesEntry" type="checkbox" placeholder = ""><label>1 - Favor of the Waves</label><br>
+			<input id="renewalEntry" type="checkbox" placeholder = ""><label>2 - Renewal</label><br>
+			<input id="riptideEntry" type="checkbox" placeholder = ""><label>2 - Riptide</label><br>
+			<input id="seaSenseEntry" type="checkbox" placeholder = ""><label>3 - Sea Sense</label><br>
+			<input id="sunkenTreasureEntry" type="checkbox" placeholder = ""><label>3 - Sunken Treasure</label><br>
+			<input id="commanderOfCurrentsEntry" type="checkbox" placeholder = ""><label>4 - Commander of Currents</label><br>
+			<input id="whirlpoolEntry" type="checkbox" placeholder = ""><label>4 - Whirlpool</label><br>
+			<input id="denizenOfTheDeepEntry" type="checkbox" placeholder = ""><label>5 - Denizen of the Deep</label><br>
+			<input id="sirenSongEntry" type="checkbox" placeholder = ""><label>5 - Siren Song</label><br>
+			<input id="bountyOfTheSeaEntry" type="checkbox" placeholder = ""><label>6 - Bounty of the Sea</label><br>
+			<input id="drownEntry" type="checkbox" placeholder = ""><label>6 - Drown</label><br>
+			<input id="aquaVitaEntry" type="checkbox" placeholder = ""><label>7 - Aqua Vita</label><br>
+			<input id="undertowEntry" type="checkbox" placeholder = ""><label>7 - Undertow</label><br>
+			<input id="baptismEntry" type="checkbox" placeholder = ""><label>8 - Baptism</label><br>
+			<input id="flashFloodEntry" type="checkbox" placeholder = ""><label>8 - Flash Flood</label><br>
+			<input id="wateryGraveEntry" type="checkbox" placeholder = ""><label>9 - Watery Grave</label><br>
+			<input id="deepHorrorEntry" type="checkbox" placeholder = ""><label>9 - Deep Horror</label><br>
+			<input id="delugeEntry" type="checkbox" placeholder = ""><label>10 - Deluge</label><br>
+			<input id="sovereignOfSeasEntry" type="checkbox" placeholder = ""><label>10 - Sovereign of Seas</label><br>
+		</div>
+
+
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#updateRelicsFields" data-toggle="collapse">Add/Edit Relics</a></h3></div>
+	<div id="updateRelicsFields" class="collapse">
+
+		<label>Select Relic to Update: </label>
+		<select id="relicPropertyEntry"></select>
+
+		<br>
+
+		<label>Add Channel: </label>
+		<select id="relicChannelSelector">
+			<option value="animalChannel">Animal</option>
+			<option value="chaosChannel">Chaos</option>
+			<option value="creationChannel">Creation</option>
+			<option value="darknessChannel">Darkness</option>
+			<option value="deathChannel">Death</option>
+			<option value="earthChannel">Earth</option>
+			<option value="fertilityChannel">Fertility</option>
+			<option value="fireChannel">Fire</option>
+			<option value="frostChannel">Frost</option>
+			<option value="guardianChannel">Guardian</option>
+			<option value="healthChannel">Health</option>
+			<option value="illusionChannel">Illusion</option>
+			<option value="justiceChannel">Justice</option>
+			<option value="magicChannel">Magic</option>
+			<option value="moonChannel">Moon</option>
+			<option value="mysteryChannel">Mystery</option>
+			<option value="prophecyChannel">Prophecy</option>
+			<option value="psychopompChannel">Psychopomp</option>
+			<option value="skyChannel">Sky</option>
+			<option value="starChannel">Star</option>
+			<option value="sunChannel">Sun</option>
+			<option value="thunderChannel">Thunder</option>
+			<option value="warChannel">War</option>
+			<option value="waterChannel">Water</option>
+		</select>
+		<button onclick="addRelicChannel()">Add Channel to Relic</button>
+
+		<br>
+
+		<label>Add: </label>
+		<select id="relicBonusSelector1">
+			<option value="legendBonus1">#Legend</option>
+			<option value="animalBonus1">#Animal</option>
+			<option value="chaosBonus1">#Chaos</option>
+			<option value="creationBonus1">#Creation</option>
+			<option value="darknessBonus1">#Darkness</option>
+			<option value="deathBonus1">#Death</option>
+			<option value="earthBonus1">#Earth</option>
+			<option value="fertilityBonus1">#Fertility</option>
+			<option value="fireBonus1">#Fire</option>
+			<option value="frostBonus1">#Frost</option>
+			<option value="guardianBonus1">#Guardian</option>
+			<option value="healthBonus1">#Health</option>
+			<option value="illusionBonus1">#Illusion</option>
+			<option value="justiceBonus1">#Justice</option>
+			<option value="magicBonus1">#Magic</option>
+			<option value="moonBonus1">#Moon</option>
+			<option value="mysteryBonus1">#Mystery</option>
+			<option value="prophecyBonus1">#Prophecy</option>
+			<option value="psychopompBonus1">#Psychopomp</option>
+			<option value="skyBonus1">#Sky</option>
+			<option value="starBonus1">#Star</option>
+			<option value="sunBonus1">#Sun</option>
+			<option value="thunderBonus1">#Thunder</option>
+			<option value="warBonus1">#War</option>
+			<option value="waterBonus1">#Water</option>
+		</select>
+		<select id="relicBonusSelector2">
+			<option value="bonusDice">Dice</option>
+			<!-- <option value="bonusSuccesses">Successes</option> -->
+		</select>
+		<label>To: </label>
+		<select id="relicBonusSelector3">
+			<option value="strengthBonus">Strength</option>
+			<option value="dexterityBonus">Dexterity</option>
+			<option value="staminaBonus">Stamina</option>
+			<option value="charismaBonus">Charisma</option>
+			<option value="manipulationBonus">Manipulation</option>
+			<option value="appearanceBonus">Appearance</option>
+			<option value="perceptionBonus">Perception</option>
+			<option value="intelligenceBonus">Intelligence</option>
+			<option value="witsBonus">Wits</option>
+			<option value="academicsBonus">Academics</option>
+			<option value="animalkenBonus">Animal Ken</option>
+			<option value="artBonus">Art</option>
+			<option value="athleticsBonus">Athletics</option>
+			<option value="awarenessBonus">Awareness</option>
+			<option value="brawlBonus">Brawl</option>
+			<option value="commandBonus">Command</option>
+			<option value="controlBonus">Control</option>
+			<option value="craftBonus">Craft</option>
+			<option value="empathyBonus">Empathy</option>
+			<option value="fortitudeBonus">Fortitude</option>
+			<option value="integrityBonus">Integrity</option>
+			<option value="investigationBonus">Investigation</option>
+			<option value="larcenyBonus">Larceny</option>
+			<option value="marksmanshipBonus">Marksmanship</option>
+			<option value="medicineBonus">Medicine</option>
+			<option value="meleeBonus">Melee</option>
+			<option value="occultBonus">Occult</option>
+			<option value="politicsBonus">Politics</option>
+			<option value="presenceBonus">Presence</option>
+			<option value="scienceBonus">Science</option>
+			<option value="stealthBonus">Stealth</option>
+			<option value="survivalBonus">Survival</option>
+			<option value="thrownBonus">Thrown</option>
+			<option value="animalBonus">Animal Boons</option>
+			<option value="chaosBonus">Chaos Boons</option>
+			<option value="creationBonus">Creation Boons</option>
+			<option value="darknessBonus">Darkness Boons</option>
+			<option value="deathBonus">Death Boons</option>
+			<option value="earthBonus">Earth Boons</option>
+			<option value="fertilityBonus">Fertility Boons</option>
+			<option value="fireBonus">Fire Boons</option>
+			<option value="frostBonus">Frost Boons</option>
+			<option value="guardianBonus">Guardian Boons</option>
+			<option value="healthBonus">Health Boons</option>
+			<option value="illusionBonus">Illusion Boons</option>
+			<option value="justiceBonus">Justice Boons</option>
+			<option value="magicBonus">Magic Boons</option>
+			<option value="moonBonus">Moon Boons</option>
+			<option value="mysteryBonus">Mystery Boons</option>
+			<option value="prophecyBonus">Prophecy Boons</option>
+			<option value="psychopompBonus">Psychopomp Boons</option>
+			<option value="skyBonus">Sky Boons</option>
+			<option value="starBonus">Star Boons</option>
+			<option value="sunBonus">Sun Boons</option>
+			<option value="thunderBonus">Thunder Boons</option>
+			<option value="warBonus">War Boons</option>
+			<option value="waterBonus">Water Boons</option>
+			<option value="dodgeDvBonus">Dodge DV</option>
+			<option value="mentalResist">Mental Resist</option>
+			<option value="socialResist">Social Resist</option>
+			<option value="physicalResist">Physical Resist</option>
+			<option value="numberFate">#Fate</option>
+		</select>
+		<button onclick="addRelicBonus()">Add Bonus to Relic</button>
+
+		<br>
+
+		<label>Add: </label>
+		<select id="itemEnhancementSelector1">
+			<option value="ChooseOne">Choose One</option>
+			<option value="1">+1</option>
+			<option value="2">+2</option>
+			<option value="3">+3</option>
+			<option value="4">+4</option>
+			<option value="5">+5</option>
+		</select>
+		<label>To: </label>
+		<select id="itemEnhancementSelector2">
+			<option value="ChooseOne">Choose One</option>
+			<option value="bonusAttack">Attack</option>
+			<option value="bonusDamage">Damage</option>
+			<option value="soak">Soak</option>
+			<option value="parryDv">Defense</option>
+		</select>
+		<button onclick="addItemEnhancement()">Add Item Enhancement</button>
+
+		<br>
+
+		<label>Add: </label>
+		<select id="relicBonusSelectorA">
+			<option value="legendBonusA">#Legend</option>
+			<option value="animalBonusA">#Animal</option>
+			<option value="chaosBonusA">#Chaos</option>
+			<option value="creationBonusA">#Creation</option>
+			<option value="darknessBonusA">#Darkness</option>
+			<option value="deathBonusA">#Death</option>
+			<option value="earthBonusA">#Earth</option>
+			<option value="fertilityBonusA">#Fertility</option>
+			<option value="fireBonusA">#Fire</option>
+			<option value="frostBonusA">#Frost</option>
+			<option value="guardianBonusA">#Guardian</option>
+			<option value="healthBonusA">#Health</option>
+			<option value="illusionBonusA">#Illusion</option>
+			<option value="justiceBonusA">#Justice</option>
+			<option value="magicBonusA">#Magic</option>
+			<option value="moonBonusA">#Moon</option>
+			<option value="mysteryBonusA">#Mystery</option>
+			<option value="prophecyBonusA">#Prophecy</option>
+			<option value="psychopompBonusA">#Psychopomp</option>
+			<option value="skyBonusA">#Sky</option>
+			<option value="starBonusA">#Star</option>
+			<option value="sunBonusA">#Sun</option>
+			<option value="thunderBonusA">#Thunder</option>
+			<option value="warBonusA">#War</option>
+			<option value="waterBonusA">#Water</option>
+		</select>
+		<label>To: </label>
+		<select id="relicBonusSelectorB">
+			<option value="numberAnimalBonus">#Animal</option>
+			<option value="numberChaosBonus">#Chaos</option>
+			<option value="numberCreationBonus">#Creation</option>
+			<option value="numberDarknessBonus">#Darkness</option>
+			<option value="numberDeathBonus">#Death</option>
+			<option value="numberEarthBonus">#Earth</option>
+			<option value="numberFertilityBonus">#Fertility</option>
+			<option value="numberFireBonus">#Fire</option>
+			<option value="numberFrostBonus">#Frost</option>
+			<option value="numberGuardianBonus">#Guardian</option>
+			<option value="numberHealthBonus">#Health</option>
+			<option value="numberIllusionBonus">#Illusion</option>
+			<option value="numberJusticeBonus">#Justice</option>
+			<option value="numberMagicBonus">#Magic</option>
+			<option value="numberMoonBonus">#Moon</option>
+			<option value="numberMysteryBonus">#Mystery</option>
+			<option value="numberProphecyBonus">#Prophecy</option>
+			<option value="numberPsychopompBonus">#Psychopomp</option>
+			<option value="numberSkyBonus">#Sky</option>
+			<option value="numberStarBonus">#Star</option>
+			<option value="numberSunBonus">#Sun</option>
+			<option value="numberThunderBonus">#Thunder</option>
+			<option value="numberWarBonus">#War</option>
+			<option value="numberWaterBonus">#Water</option>
+		</select>
+		<button onclick="addRelicBoons()">Add #Boons to Purview</button>
+
+		<br>
+
+		<label>New Relic Property</label><input id="relicMiscPropEntry" type="text">
+		<button onclick="addRelicProperty()">Add Text Property to Relic</button>
+
+		<hr>
+
+		<label>New Relic Name</label><input id="relicNameEntry" type="text">
+		<label>New Relic Level</label><input id="relicLevelEntry" type="number">
+		<br>
+		<input id="inherentRelicEntry" type="checkbox"><label>Inherent Birthright?</label>
+		<input id="remoteAccessRelicEntry" type="checkbox"><label>Remote Access?</label>
+		<br>
+		<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="addNewRelic()">Add New Relic</button>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#attacksFields" data-toggle="collapse">Add/Edit Attacks</a></h3></div>
+	<div id="attacksFields" class="collapse">
+		<label>New Attack Name</label><input id="attackNameEntry" type="text"><br>
+		<label>Attack Attribute</label><select id="attackAttributeSelector">
+			<option value="ChooseOne">Choose One</option>
+			<option value="strength">Strength</option>
+			<option value="dexterity">Dexterity</option>
+			<option value="stamina">Stamina</option>
+			<option value="charisma">Charisma</option>
+			<option value="manipulation">Manipulation</option>
+			<option value="appearance">Appearance</option>
+			<option value="perception">Perception</option>
+			<option value="intelligence">Intelligence</option>
+			<option value="wits">Wits</option>
+		</select>
+		<label>Attack Skill</label><select id="attackSkillSelector">
+			<option value="academics">Academics</option>
+			<option value="animalken">Animal Ken</option>
+			<option value="art">Art</option>
+			<option value="athletics">Athletics</option>
+			<option value="awareness">Awareness</option>
+			<option value="brawl">Brawl</option>
+			<option value="command">Command</option>
+			<option value="control">Control</option>
+			<option value="craft">Craft</option>
+			<option value="empathy">Empathy</option>
+			<option value="fortitude">Fortitude</option>
+			<option value="integrity">Integrity</option>
+			<option value="investigation">Investigation</option>
+			<option value="larceny">Larceny</option>
+			<option value="marksmanship">Marksmanship</option>
+			<option value="medicine">Medicine</option>
+			<option value="melee">Melee</option>
+			<option value="occult">Occult</option>
+			<option value="politics">Politics</option>
+			<option value="presence">Presence</option>
+			<option value="science">Science</option>
+			<option value="stealth">Stealth</option>
+			<option value="survival">Survival</option>
+			<option value="thrown">Thrown</option>
+		</select>
+		<label>Attack Base</label><input id="attackBaseSelector" type="number">
+		<br>
+		<label>Damage Attribute</label><select id="damageAttributeSelector">
+			<option value="strength">Strength</option>
+			<option value="dexterity">Dexterity</option>
+			<option value="stamina">Stamina</option>
+			<option value="charisma">Charisma</option>
+			<option value="manipulation">Manipulation</option>
+			<option value="appearance">Appearance</option>
+			<option value="perception">Perception</option>
+			<option value="intelligence">Intelligence</option>
+			<option value="wits">Wits</option>
+		</select>
+		<label>Damage Base</label><input id="damageBaseSelector" type="number">
+		<label>Damage Type</label><select id="damageTypeSelector">
+			<option value="ChooseOne">Choose One</option>
+			<option value="lethal">Lethal</option>
+			<option value="bashing">Bashing</option>
+			<option value="aggravated">Aggravated</option>
+		</select>
+		<br>
+		<label>Parry Base</label><input id="parryBaseSelector" type="number">
+		<br>
+		<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="addNewAttack()">Add New Attack</button>
+	</div>
+
+	<div class="updateHeaders"><h3><a href="#armorFields" data-toggle="collapse">Add Armor</a></h3></div>
+	<div id="armorFields" class="collapse">
+		<label>New Armor Name</label><input id="armorNameEntry" type="text"><br>
+		<label>Bashing Soak</label><input id="bSoakEntry" type="number"><br>
+		<label>Lethal Soak</label><input id="lSoakEntry" type="number"><br>
+		<label>Aggravated Soak</label><input id="aSoakEntry" type="number"><br>
+		<label>Add Lethal to Agg?</label><input id="lethalAddAgEntry" type="checkbox"><br>
+		<label>Mobility Penalty</label><input id="mobilityPenaltyEntry" type="number"><br>
+		<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="addNewArmor(document.getElementById('armorNameEntry').value, document.getElementById('bSoakEntry').value, document.getElementById('lSoakEntry').value, document.getElementById('aSoakEntry').value, document.getElementById('lethalAddAgEntry').checked, document.getElementById('mobilityPenaltyEntry').value)">Add New Armor</button>
+	</div>
+
+	<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="toggleVisible()">Toggle Visible</button>
+	<br>
+	<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="toggleFriendly()">Add to Group:</button>
+	<select id="friendlyGroupSelector">
+		<option value="0">None</option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+	</select>
+	<span>  Current Group: </span><span id="friendlyGroupDesignation"></span>
+</div>
+<!--//UPDATE-->
+
+
+
+</div>
+<!--//TAB CONTENT-->
+
+</div><!--//CONTAINER-->
+
+
+<!-- ROLL++ MODAL -->
+<div id="rollExtraModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Roll with Extras</h4>
+      </div>
+      <div class="modal-body">
+				<input id="multipleActionPenaltyEntry" type="checkbox"><label>Multiple Action Penalty?</label><br>
+				<label>Ad Hoc Dice</label><input id="adHocDice" size="4" type="number"><br>
+				<label>Ad Hoc Succ</label><input id="adHocSucc" size="4" type="number"><br>
+				<input id="legendaryDeedEntry" type="checkbox"><label>Legendary Deed?</label><br>
+				<input id="willpowerPointEntry" type="checkbox"><label>Willpower Point?</label><br>
+				<input id="resolveEntry" type="checkbox"><label>Resolve? (MR & SR only)</label><br>
+				<input id="spentBennyEntry" type="checkbox"><label>Benny?</label><br>
+				<span id="virtueChannelPlaceholder"></span>
+				<br>
+				<div id="rollExtraModalExtras"></div>
+				<button type="button" data-dismiss="modal" onclick="rollCatcher(withExtra, document.getElementById('rollerAttributeEntry').value, document.getElementById('rollerSkillEntry').value, document.getElementById('rollerBoonEntry').value, document.getElementById('rollerPurviewEntry').value, document.getElementById('rollerVirtueEntry').value, document.getElementById('rollerOtherEntry').value, document.getElementById('rollerPresetEntry').value, document.getElementById('attackRollEntry').value, document.getElementById('damageRollEntry').value)" id="rollButtonModal">ROLL</button>
+				<!-- <button type="button" data-dismiss="modal" onclick="roll(document.getElementById('rollerAttributeEntry').value, document.getElementById('rollerSkillEntry').value, document.getElementById('rollerBoonEntry').value, document.getElementById('rollerPurviewEntry').value, document.getElementById('rollerVirtueEntry').value, document.getElementById('rollerOtherEntry').value, document.getElementById('rollerPresetEntry').value, document.getElementById('combatRollEntry').value, document.getElementById('combatTypeEntry').value)" id="rollButtonModal">ROLL</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ROLL++ MODAL -->
+
+<!-- PLEASE WAIT MODAL -->
+<div id="pleaseWaitModal" class="modal fade" role="dialog" style="background: transparent; padding-top: 50px;">
+  <div class="modal-dialog" style="background: transparent;">
+    <div class="modal-content" style="background: transparent;">
+      <div class="modal-body" style="background: transparent;">
+				<div class="spinner-loader" style="margin-left: auto; margin-right: auto; display: block;">
+  				Loading…
+				</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /PLEASE WAIT MODAL -->
+
+
+</body>
+</html>

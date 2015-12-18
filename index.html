@@ -1,0 +1,104 @@
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+	<title>
+Characters
+	</title>
+	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+	<!-- Bootstrap -->
+	<link href="http://www.terriblyuncreative.com/scion/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://www.terriblyuncreative.com/scion/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="http://css-spinners.com/css/spinners.css" type="text/css">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <script>
+    var campaignTitle = "Sample Characters";
+  </script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/allscripts.js"></script>
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+  <script type="text/javascript" src="array-scripts.js"></script>
+	<script type="text/javascript" src="index-scripts.js"></script>
+
+	<style>
+    #characterListing a {
+      font-size: 1.25em;
+    }
+	</style>
+
+</head>
+<body onload="onLoadFunctions()">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://www.terriblyuncreative.com/scion/js/bootstrap.min.js"></script>
+
+<div class="container">
+  <!--CONTAINER-->
+
+<h1><script>document.write(campaignTitle);</script></h1>
+
+<div id="characterListing">
+</div>
+
+<hr>
+
+<h4>Start a New Character?</h4>
+<input id="characterNameEntry" type="text"><label>Character Name</label><br>
+<select id="pantheonEntry">
+  <option value="ChooseOne">Choose One</option>
+  <option value="Aesir">Aesir</option>
+  <option value="Alilah">Alilah</option>
+  <option value="Annuna">Annuna</option>
+  <option value="Apu">Apu</option>
+  <option value="Atua">Atua</option>
+  <option value="Bogovi">Bogovi</option>
+  <option value="Deva">Deva</option>
+  <option value="Elohim">Elohim</option>
+  <option value="Inue">Inue</option>
+  <option value="Kami">Kami</option>
+  <option value="Kuh">K'uh</option>
+  <option value="Nemetondevos">Nemetondevos</option>
+  <option value="Netjer">Netjer</option>
+  <option value="Orisha">Orisha</option>
+  <option value="Shen">Shen</option>
+  <option value="Teotl">Teotl</option>
+  <option value="Theoi">Theoi</option>
+  <option value="Tuatha">Tuatha de Danaan</option>
+  <option value="Yazata">Yazata</option>
+</select>
+<label>Pantheon</label><br>
+
+<button type="button" data-toggle="modal" data-target="#pleaseWaitModal" onclick="createNewCharacter()">Create New Character</button>
+
+</div>
+<!--/CONTAINER-->
+
+<!-- PLEASE WAIT MODAL -->
+<div id="pleaseWaitModal" class="modal fade" role="dialog" style="background: transparent; padding-top: 50px;">
+  <div class="modal-dialog" style="background: transparent;">
+    <div class="modal-content" style="background: transparent;">
+      <div class="modal-body" style="background: transparent;">
+				<div class="spinner-loader" style="margin-left: auto; margin-right: auto; display: block;">
+  				Loading…
+				</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /PLEASE WAIT MODAL -->
+
+</body>
+
+</html>
