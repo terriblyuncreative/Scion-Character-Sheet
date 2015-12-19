@@ -10,3 +10,9 @@ As the game's power scale increased, the number of dice that players had to roll
 SOLUTION
 The application records the character's traits, derives dice totals from those traits, and generates a result from that dice total for any given combination of traits without any physical dice needing to be rolled. 
 
+HOW TO USE
+1. From the main page, select the "Test Tester" character. 
+
+ROLLS (Default Tab)
+1. Under "Open Rolls" select an Attribute and a Skill from the appropriate dropdowns.  
+2. Click "Roll".
